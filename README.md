@@ -22,7 +22,7 @@ Os pedidos presenciais são anotados em papel, enquanto os pedidos remotos são 
 
 Além disso, os pedidos realizados via WhatsApp dependem que algum funcionário acompanhe constantemente as mensagens recebidas. Em muitos momentos, devido à rotina operacional da lanchonete, as mensagens não são respondidas com a rapidez esperada pelos clientes, gerando atrasos no atendimento e possíveis perdas de vendas.
 
-Outro problema identificado é a baixa presença digital da empresa. Atualmente a Vide Gula possui apenas cadastro no Google, não possuindo um site próprio para divulgação do cardápio, fortalecimento da marca ou realização de pedidos online OU Ifood. 
+Outro problema identificado é a baixa presença digital da empresa. Atualmente a Vide Gula possui apenas cadastro no Google, não possuindo um site próprio para divulgação da marca e realização de pedidos online, ficando dependente do atendimento manual.. 
 
 ---
 
@@ -60,40 +60,77 @@ O objetivo principal é centralizar o recebimento de pedidos em uma única plata
 
 ### Frontend
 
-* React 19.1.0
-* Vite 7.0.0
-* JavaScript ES2025
-* HTML5
-* CSS3
-* Bootstrap 5.3.7
-* Axios 1.11.0
+- React 19
+- Vite 7
+- JavaScript
+- HTML5
+- CSS3
+- Bootstrap 5
+- Axios
 
 ### Backend
 
-* Java 21
-* Spring Boot 3.5.5
-* Spring Data JPA 3.5.5
-* Spring Security 6.5.3
-* Maven 3.9+
+- Java 21
+- Spring Boot 3
+- Spring Data JPA
+- Spring Security
+- Maven
 
 ### Banco de Dados
 
-* MySQL 8.0
+- MySQL 8
 
 ### Testes
 
-* JUnit 5
-* Selenium IDE
+- JUnit 5
+- Selenium IDE
 
 ### Ferramentas
 
-* Git 2.50+
-* GitHub
-* IntelliJ IDEA Community Edition 2025
-* Visual Studio Code 1.104+
-* Postman 11+
+- Git
+- GitHub
+- IntelliJ IDEA Community Edition
+- Visual Studio Code
+- Postman
 
 ---
+
+## 📚 Utilização das Tecnologias
+
+### Frontend
+
+- **React:** Construção da interface utilizando componentes reutilizáveis.
+- **Vite:** Ambiente de desenvolvimento e build da aplicação React.
+- **JavaScript:** Implementação da lógica da interface.
+- **HTML5:** Estruturação das páginas do sistema.
+- **CSS3:** Estilização e responsividade da interface.
+- **Bootstrap:** Componentes visuais e layout responsivo.
+- **Axios:** Comunicação entre frontend e backend.
+
+### Backend
+
+- **Java:** Implementação das regras de negócio da aplicação.
+- **Spring Boot:** Desenvolvimento da API REST.
+- **Spring Data JPA:** Persistência e manipulação dos dados.
+- **Spring Security:** Autenticação e controle de acesso.
+- **Maven:** Gerenciamento de dependências e build do projeto.
+
+### Banco de Dados
+
+- **MySQL:** Armazenamento persistente das informações do sistema.
+
+### Testes
+
+- **JUnit 5:** Testes unitários das regras de negócio.
+- **Selenium IDE:** Automação de testes de interface.
+
+### Ferramentas
+
+- **Git:** Controle de versão.
+- **GitHub:** Hospedagem e colaboração do código-fonte.
+- **Visual Studio Code:** Desenvolvimento frontend.
+- **IntelliJ IDEA:** Desenvolvimento backend Java.
+- **Postman:** Testes e validação da API REST.
 
 ## 🖥️ Instruções para Uso
 
@@ -278,7 +315,9 @@ Produtos associados a um pedido.
 - pedido_id
 - tamanho
 - quantidade
-- Relacionamentos Principais
+
+#### Relacionamentos Principais
+
 - Um cliente pode possuir vários endereços.
 - Um cliente pode realizar vários pedidos.
 - Um pedido pode conter vários itens.
@@ -302,24 +341,108 @@ Produtos associados a um pedido.
 ## 📁 Organização do Projeto
 
 ```text
+```text
 vide-gula-lanches-pizzas/
 │
 ├── frontend/
+│   ├── src/
+│   │   │
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── pages
+│   │   ├── services/
+│   │   ├── hooks/
+│   │   ├── contexts/
+│   │   ├── routes/
+│   │   ├── utils/
+│   │   ├── styles/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   ├── package.json
+│   └── vite.config.js
+│
 ├── backend/
+│   │
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controller/
+│   │   ├── service/
+│   │   ├── repository/
+│   │   ├── model/
+│   │   ├── dto/
+│   │   ├── mapper/
+│   │   ├── exception/
+│   │   ├── security/
+│   │   └── util/
+│   │   │   │
+│   │   │   └── resources/
+│   │   │       ├── application.properties
+│   │   │       ├── static/
+│   │   │       └── templates/
+│   │   │
+│   │   └── test/
+│   │       └── java/
+│   │
+│   ├── pom.xml 
+│   └── mvnw
+│
 ├── docs/
+│   │
+│   ├── requisitos/
+│   ├── diagramas/
+│   ├── atas/
+│   └── apresentacoes/
+│
 ├── padroes-adotados/
+│   │
+│   ├── regras-verificacao-requisitos.md
+│   ├── padrao-commits.md
+│   └── padrao-nomenclatura.md
+│
 ├── testes/
-└── README.md
+│   │
+│   ├── unidade/
+│   ├── selenium/
+│   └── evidencias/
+│
+├── .gitignore
+├── README.md
+└── LICENSE
 ```
+### Descrição das Pastas
 
-### Estrutura das Pastas
+#### Frontend
 
-* **frontend/**: Interface web desenvolvida em React.
-* **backend/**: API REST desenvolvida em Java Spring Boot.
-* **docs/**: Documentação do projeto.
-* **padroes-adotados/**: Documentos de padronização e qualidade.
-* **testes/**: Evidências e roteiros de testes.
-* **README.md**: Documentação principal do projeto.
+- **assets/**: imagens, ícones e arquivos estáticos.
+- **components/**: componentes reutilizáveis da interface.
+- **pages/**: páginas do sistema.
+- **services/**: comunicação com a API.
+- **hooks/**: hooks customizados do React.
+- **contexts/**: gerenciamento de estado global.
+- **routes/**: definição das rotas da aplicação.
+- **utils/**: funções utilitárias.
+- **styles/**: estilos globais.
+
+#### Backend
+
+- **controller/**: endpoints da API REST.
+- **service/**: regras de negócio.
+- **repository/**: acesso ao banco de dados.
+- **model/**: entidades do sistema.
+- **dto/**: objetos de transferência de dados.
+- **mapper/**: conversão entre entidades e DTOs.
+- **exception/**: tratamento centralizado de erros.
+- **security/**: autenticação e autorização.
+- **config/**: configurações da aplicação.
+- **util/**: classes auxiliares.
+
+#### Documentação
+
+- **docs/**: documentação do projeto.
+- **padroes-adotados/**: padrões definidos pela equipe.
+- **testes/**: roteiros, scripts e evidências de testes.
+
 
 ---
 
@@ -351,9 +474,3 @@ Esta versão conterá:
 * Modelagem inicial do banco de dados;
 * README do projeto;
 * Estrutura inicial da aplicação.
-
----
-
-## 📜 Licença
-
-Projeto acadêmico desenvolvido para a disciplina **GCC188 - Engenharia de Software** da **Universidade Federal de Lavras (UFLA)**.
