@@ -232,7 +232,7 @@ npm run dev
 
 ## 🗄️ Modelo de Dados Inicial
 
-O sistema foi modelado para atender às necessidades da Vide Gula Lanches e Pizzas, permitindo o gerenciamento de clientes, endereços, produtos,adicionais e pedidos.
+O sistema foi modelado para atender às necessidades da Vide Gula Lanches e Pizzas, permitindo o gerenciamento de clientes, endereços, produtos e pedidos.
 
 ### Principais Entidades
 #### Usuário
@@ -278,15 +278,6 @@ Representa os itens vendidos pela lanchonete, como hambúrgueres, pizzas, porç�
 - preço
 - descrição
 
-#### Adicional
-Itens opcionais que podem ser adicionados aos produtos.
-
-- id
-- nome
-- preço
-- disponível
-- Pedido
-
 #### Pedido
 Representa a compra realizada pelo cliente.
 
@@ -312,8 +303,6 @@ Produtos associados a um pedido.
 - Um cliente pode possuir vários endereços.
 - Um cliente pode realizar vários pedidos.
 - Um pedido pode conter vários itens.
-- Um produto pode possuir vários adicionais.
-- Um item de pedido pode possuir adicionais personalizados.
 - Operação Principal do Sistema
 
 #### A principal operação do sistema é o gerenciamento de pedidos, envolvendo as seguintes entidades:
@@ -323,7 +312,6 @@ Produtos associados a um pedido.
 - Pedido
 - ItemPedido
 - Produto
-- Adicional
 
 --- 
 
