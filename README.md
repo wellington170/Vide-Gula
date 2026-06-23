@@ -136,17 +136,17 @@ Responsável pelo acesso administrativo ao sistema.
 - email
 - senha
 - perfil
-- Cliente
 
-#### Cliente 
+#### Cliente
+
 Representa os clientes que realizam pedidos na plataforma.
 
 - id
 - nome
 - telefone
-- Endereço
 
-#### Endereço 
+#### Endereço
+
 Permite que um cliente possua um ou mais endereços cadastrados para entrega.
 
 - id
@@ -159,9 +159,9 @@ Permite que um cliente possua um ou mais endereços cadastrados para entrega.
 - estado
 - cep
 - referência
-- Produto
 
 #### Produto
+
 Representa os itens vendidos pela lanchonete, como hambúrgueres, pizzas, porções e bebidas.
 
 - id
@@ -171,6 +171,7 @@ Representa os itens vendidos pela lanchonete, como hambúrgueres, pizzas, porç�
 - descrição
 
 #### Pedido
+
 Representa a compra realizada pelo cliente.
 
 - id
@@ -180,13 +181,14 @@ Representa a compra realizada pelo cliente.
 - data_hora
 - status
 - valor_total
-- ItemPedido
 
 #### ItemPedido
+
 Produtos associados a um pedido.
 
 - id
 - pedido_id
+- produto_id
 - tamanho
 - quantidade
 
@@ -195,9 +197,12 @@ Produtos associados a um pedido.
 - Um cliente pode possuir vários endereços.
 - Um cliente pode realizar vários pedidos.
 - Um pedido pode conter vários itens.
-- Operação Principal do Sistema
+- Um item de pedido está associado a um produto.
+- Um produto pode estar presente em vários pedidos.
 
-#### A principal operação do sistema é o gerenciamento de pedidos, envolvendo as seguintes entidades:
+### Operação Principal do Sistema
+
+A principal operação do sistema é o gerenciamento de pedidos, envolvendo as seguintes entidades:
 
 - Cliente
 - Endereço
