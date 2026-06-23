@@ -28,169 +28,65 @@ Outro problema identificado é a baixa presença digital da empresa. Atualmente 
 
 ## 💡 Solução Proposta
 
-O sistema consiste em uma plataforma web que permitirá aos clientes realizar pedidos diretamente pelo site da lanchonete.
+Plataforma web para realização e gerenciamento de pedidos online, incluindo:
 
-O objetivo principal é centralizar o recebimento de pedidos em uma única plataforma, diminuindo a dependência de canais manuais de atendimento.
-
-### Funcionalidades previstas
-
-* Cadastro e autenticação de usuários;
-* Catálogo digital de produtos;
-* Cadastro e gerenciamento de clientes;
-* Cadastro e gerenciamento de produtos;
-* Realização de pedidos online;
-* Opção de retirada no local;
-* Opção de entrega por delivery;
-* Acompanhamento do status dos pedidos;
-* Histórico de pedidos;
-* Área administrativa para gerenciamento da operação.
-
-### Benefícios esperados
-
-* Redução da dependência do WhatsApp;
-* Redução da sobrecarga do atendimento telefônico;
-* Maior organização dos pedidos;
-* Agilidade no atendimento;
-* Melhor experiência para os clientes;
-* Fortalecimento da presença digital da empresa.
-
----
+- Cadastro e autenticação de usuários
+- Catálogo digital de produtos
+- Realização e acompanhamento de pedidos
+- Delivery e retirada no local
+- Área administrativa
 
 ## 🚀 Tecnologias Utilizadas
 
 ### Frontend
-
 - React 19
 - Vite 7
 - JavaScript
-- HTML5
-- CSS3
 - Bootstrap 5
 - Axios
 
 ### Backend
-
-- Java 21
-- Spring Boot 3
-- Spring Data JPA
-- Spring Security
-- Maven
+- Node.js 22
+- Express
+- Sequelize ORM
+- JWT
 
 ### Banco de Dados
-
 - MySQL 8
 
 ### Testes
-
-- JUnit 5
+- Jest
 - Selenium IDE
-
-### Ferramentas
-
-- Git
-- GitHub
-- IntelliJ IDEA Community Edition
-- Visual Studio Code
-- Postman
-
----
-
-## 📚 Utilização das Tecnologias
-
-### Frontend
-
-- **React:** Construção da interface utilizando componentes reutilizáveis.
-- **Vite:** Ambiente de desenvolvimento e build da aplicação React.
-- **JavaScript:** Implementação da lógica da interface.
-- **HTML5:** Estruturação das páginas do sistema.
-- **CSS3:** Estilização e responsividade da interface.
-- **Bootstrap:** Componentes visuais e layout responsivo.
-- **Axios:** Comunicação entre frontend e backend.
-
-### Backend
-
-- **Java:** Implementação das regras de negócio da aplicação.
-- **Spring Boot:** Desenvolvimento da API REST.
-- **Spring Data JPA:** Persistência e manipulação dos dados.
-- **Spring Security:** Autenticação e controle de acesso.
-- **Maven:** Gerenciamento de dependências e build do projeto.
-
-### Banco de Dados
-
-- **MySQL:** Armazenamento persistente das informações do sistema.
-
-### Testes
-
-- **JUnit 5:** Testes unitários das regras de negócio.
-- **Selenium IDE:** Automação de testes de interface.
-
-### Ferramentas
-
-- **Git:** Controle de versão.
-- **GitHub:** Hospedagem e colaboração do código-fonte.
-- **Visual Studio Code:** Desenvolvimento frontend.
-- **IntelliJ IDEA:** Desenvolvimento backend Java.
-- **Postman:** Testes e validação da API REST.
 
 ## 🖥️ Instruções para Uso
 
 ### Pré-requisitos
 
-* Java 21+
-* Node.js 22+
-* MySQL 8+
-* Git
+- Node.js 22+
+- MySQL 8+
+- Git
 
-### Criando o Banco de Dados
+### Banco de Dados
 
 ```sql
 CREATE DATABASE vide_gula;
 ```
 
-### Configuração da Aplicação
-
-Arquivo:
-
-```text
-backend/src/main/resources/application.properties
-```
-
-Exemplo:
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/vide_gula
-spring.datasource.username=root
-spring.datasource.password=senha
-```
-
-### Executando o Backend
+### Backend
 
 ```bash
 cd backend
-mvn spring-boot:run
+npm install
+npm run dev
 ```
 
-API disponível em:
-
-```text
-http://localhost:8080
-```
-
-### Executando o Frontend
+### Frontend
 
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-
-Aplicação disponível em:
-
-```text
-http://localhost:5173
-```
-
----
 
 ## 👨‍💻 Instruções para Desenvolvedores
 
@@ -200,26 +96,22 @@ http://localhost:5173
 git clone https://github.com/SEU-USUARIO/vide-gula-lanches-pizzas.git
 ```
 
-### Instalar Dependências do Frontend
+### Instalar Dependências
 
 ```bash
 cd frontend
 npm install
+
+cd ../backend
+npm install
 ```
 
-### Instalar Dependências do Backend
-
-```bash
-cd backend
-mvn clean install
-```
-
-### Executar o Projeto
+### Executar
 
 Backend:
 
 ```bash
-mvn spring-boot:run
+npm run dev
 ```
 
 Frontend:
@@ -323,10 +215,9 @@ vide-gula-lanches-pizzas/
 │
 ├── frontend/
 │   ├── src/
-│   │   │
 │   │   ├── assets/
 │   │   ├── components/
-│   │   ├── pages
+│   │   ├── pages/
 │   │   ├── services/
 │   │   ├── hooks/
 │   │   ├── contexts/
@@ -340,45 +231,32 @@ vide-gula-lanches-pizzas/
 │   └── vite.config.js
 │
 ├── backend/
-│   │
 │   ├── src/
 │   │   ├── config/
-│   │   ├── controller/
-│   │   ├── service/
-│   │   ├── repository/
-│   │   ├── model/
-│   │   ├── dto/
-│   │   ├── mapper/
-│   │   ├── exception/
-│   │   ├── security/
-│   │   └── util/
-│   │   │   │
-│   │   │   └── resources/
-│   │   │       ├── application.properties
-│   │   │       ├── static/
-│   │   │       └── templates/
-│   │   │
-│   │   └── test/
-│   │       └── java/
+│   │   ├── controllers/
+│   │   ├── services/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middlewares/
+│   │   ├── database/
+│   │   └── utils/
 │   │
-│   ├── pom.xml 
-│   └── mvnw
+│   ├── package.json
+│   ├── .env
+│   └── server.js
 │
 ├── docs/
-│   │
 │   ├── requisitos/
 │   ├── diagramas/
 │   ├── atas/
 │   └── apresentacoes/
 │
 ├── padroes-adotados/
-│   │
 │   ├── regras-verificacao-requisitos.md
 │   ├── padrao-commits.md
 │   └── padrao-nomenclatura.md
 │
 ├── testes/
-│   │
 │   ├── unidade/
 │   ├── selenium/
 │   └── evidencias/
@@ -403,17 +281,15 @@ vide-gula-lanches-pizzas/
 
 #### Backend
 
-- **controller/**: endpoints da API REST.
-- **service/**: regras de negócio.
-- **repository/**: acesso ao banco de dados.
-- **model/**: entidades do sistema.
-- **dto/**: objetos de transferência de dados.
-- **mapper/**: conversão entre entidades e DTOs.
-- **exception/**: tratamento centralizado de erros.
-- **security/**: autenticação e autorização.
+- **controllers/**: endpoints da API REST.
+- **services/**: regras de negócio.
+- **models/**: entidades e modelos do banco de dados.
+- **routes/**: definição das rotas da API.
+- **middlewares/**: autenticação, autorização e tratamento de erros.
+- **database/**: configuração do banco, migrations e seeders.
 - **config/**: configurações da aplicação.
-- **util/**: classes auxiliares.
-
+- **utils/**: funções auxiliares.
+```
 #### Documentação
 
 - **docs/**: documentação do projeto.
