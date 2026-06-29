@@ -1,0 +1,10 @@
+//DENTRO DE .SEQUELIZERC
+const {resolve}=require('path');
+
+module.exports={
+    //resolve serve para navegação entre as pastas do projeto
+    //__dirname é a variável para indicar o caminho absoluto do projeto
+    consfig: resolve(__dirname,'src', 'configs', 'db.js' ),
+    'models-path': resolve(__dirname, 'src', 'models'),
+    'migrations-paths': resolve(__dirname, 'src', 'database', 'migrations')
+}

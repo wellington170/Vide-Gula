@@ -1,0 +1,19 @@
+{
+  "name": "vide-gula",
+  "version": "1.0.0",
+  "description": "Sistema Web de Gestão de Pedidos para Delivery e Retirada desenvolvido para a disciplina GCC188 - Engenharia de Software da Universidade Federal de Lavras (UFLA).",
+  "type": "commonjs",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
