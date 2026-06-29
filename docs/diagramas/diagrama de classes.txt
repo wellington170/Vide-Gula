@@ -1,0 +1,110 @@
+classDiagram
+
+class Usuario {
+    -id: UUID
+    -nome: String
+    -telefone: String
+    -email: String
+    -senha: String
+    -perfil: PerfilUsuario
+    -createdAt: Date
+    -updatedAt: Date
+}
+
+class Endereco {
+    -id: UUID
+    -usuarioId: UUID
+    -rua: String
+    -numero: String
+    -bairro: String
+    -cidade: String
+    -estado: String
+    -cep: String
+    -complemento: String
+    -pontoReferencia: String
+    -ativo: Boolean
+}
+
+class Produto {
+    -id: UUID
+    -nome: String
+    -descricao: String
+    -tipo: TipoProduto
+    -precoBase: Decimal
+    -imagem: String
+    -ativo: Boolean
+    -disponivel: Boolean
+    -createdAt: Date
+    -updatedAt: Date
+}
+
+class Pedido {
+    -id: UUID
+    -usuarioId: UUID
+    -enderecoId: UUID
+    -status: StatusPedido
+    -formaRecebimento: FormaRecebimento
+    -formaPagamento: FormaPagamento
+    -trocoPara: Decimal
+    -taxaEntrega: Decimal
+    -valorTotal: Decimal
+    -createdAt: Date
+    -updatedAt: Date
+}
+
+class ItemPedido {
+    -id: UUID
+    -pedidoId: UUID
+    -produtoId: UUID
+    -quantidade: Integer
+    -precoUnitario: Decimal
+    -subtotal: Decimal
+    -observacao: String
+}
+
+class PerfilUsuario {
+<<enumeration>>
+CLIENTE
+ADMINISTRADOR
+}
+
+class TipoProduto {
+<<enumeration>>
+PIZZA
+LANCHE
+BEBIDA
+PORCAO
+}
+
+class StatusPedido {
+<<enumeration>>
+RECEBIDO
+EM_PREPARO
+SAIU_PARA_ENTREGA
+ENTREGUE
+CANCELADO
+}
+
+class FormaRecebimento {
+<<enumeration>>
+DELIVERY
+RETIRADA
+}
+
+class FormaPagamento {
+<<enumeration>>
+DINHEIRO
+PIX
+CARTAO_CREDITO
+CARTAO_DEBITO
+}
+
+Usuario "1" --> "0..*" Endereco : possui
+
+Usuario "1" --> "0..*" Pedido : realiza
+
+Pedido "1" *-- "1..*" ItemPedido : contém
+
+Produto "1" --> "0..*" ItemPedido : refere
+
+Endereco "1" <-- "0..*" Pedido : entrega em
