@@ -1,11 +1,8 @@
-body {
-  background-color: var(--bg-color);
+.auth-container {
+  background-color: var(--secondary-color);
   background-image: url('../../images/background_image_auth.png');
   background-size: cover;
   min-height: 100vh;
-}
-
-.auth-container {
   display: flex;
   justify-content: left;
   align-items: center;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import './Auth.css';
-import logo from '../../images/logo_auth.png';
+import logo from '../../images/logo.png';
 
 const Login = () => {
   return (

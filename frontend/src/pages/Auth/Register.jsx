@@ -1,6 +1,6 @@
 import React from 'react';
 import './Auth.css';
-import logo from '../../images/logo_auth.png';
+import logo from '../../images/logo.png';
 
 const Register = () => {
   return (
