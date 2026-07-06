@@ -85,15 +85,9 @@ const getStatusClass = (status) => {
 
 const Dashboard = () => {
 
-  const [quantidadePedidos, setQuantidadePedidos] = useState(0);
-
-  useEffect(() => {
-    pedidos.map((pedido) => {
-      if (pedido.status === "Preparo" || pedido.status === "Enviado") {
-        setQuantidadePedidos((prev) => prev + 1);
-      }
-    });
-  }, [pedidos]);
+  const quantidadePedidos = pedidos.filter(
+    pedido => pedido.status === "Preparo" || pedido.status === "Enviado"
+  ).length;
 
   return (
     <div className="dashboard-container">
