@@ -13,16 +13,16 @@ const Navbar = () => {
       </div>
       
       <nav className="navbar-links">
-        <NavLink to="/carrinho" className={({ isActive }) => isActive ? "nav-link ativo" : "nav-link"}>
-          <span className="icon-placeholder">[🛒]</span> Produtos
+        <NavLink to="/produtos" className={({ isActive }) => isActive ? "nav-link ativo" : "nav-link"}>
+          <span className="icon-placeholder">🛒</span> Produtos
         </NavLink>
         <NavLink to="/pedidos" className={({ isActive }) => isActive ? "nav-link ativo" : "nav-link"}>
-          <span className="icon-placeholder">[📋]</span> Pedidos
+          <span className="icon-placeholder">📋</span> Pedidos
         </NavLink>
       </nav>
       
       <div className="user-profile">
-        <span className="icon-placeholder user-icon">[👤]</span>
+        <span className="icon-placeholder user-icon">👤</span>
       </div>
     </header>
   );

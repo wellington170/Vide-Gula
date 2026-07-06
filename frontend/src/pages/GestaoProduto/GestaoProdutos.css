@@ -1,0 +1,264 @@
+.gestao-container {
+  padding: 10px 5% 50px 5%;
+}
+
+.titulo-pagina {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 25px;
+  color: var(--secondary-color);
+}
+
+/* Container da gestão */
+.gestao-conteudo {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.painel-tabela, .painel-formulario {
+  background-color: #ffb703;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+/* Painel da esquerda */
+.painel-tabela {
+  flex: 3;
+  overflow-x: auto;
+}
+
+.tabela-acoes {
+  display: flex;
+  justify-content: end;
+  align-items: flex-end;
+  margin-bottom: 15px;
+}
+
+.botoes-acao {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-icone {
+  background-color: var(--white);
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-icone:hover {
+  transition: 0.2;
+  opacity: 0.85;
+}
+
+.ativo-editar { background-color: #3b82f6; color: white; }
+.ativo-excluir { background-color: #ff2b2b; color: white; }
+
+/* Estilização da Tabela */
+.tabela-container {
+  background-color: transparent;
+  border-radius: 12px;
+  overflow: scroll;
+}
+
+.tabela-produtos {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 14px;
+}
+
+.input-tabela {
+  width: 100%;
+  padding: 5px;
+  border: 1px dashed var(--secondary-color);
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+.input-tabela:focus {
+  outline: none;
+  background-color: #fff;
+  border-style: solid;
+}
+.select-tabela {
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.modo-exclusao .linha-clicavel {
+  cursor: pointer;
+}
+.modo-exclusao .linha-clicavel:hover {
+  transition: 0.2s;
+  background-color: #dc2626;
+}
+
+.tabela-produtos th {
+  background-color: var(--secondary-color);
+  color: #ffffff;
+  padding: 12px;
+  font-weight: 600;
+}
+
+.tabela-produtos td {
+  padding: 12px;
+  color: #333;
+}
+
+/* Linhas alternadas */
+.tabela-produtos tr:nth-child(odd) {
+  background-color: #ffe699;
+}
+
+.tabela-produtos tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+/* Categorias e Invisibilidade */
+.badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tipo-porcao { background-color: #d97706; }
+.tipo-burguer { background-color: #dc2626; }
+.tipo-pizza { background-color: var(--secondary-color); }
+.tipo-bebida { background-color: #fcd34d; color: #000; }
+
+.vis-visivel { background-color: #65a30d; }
+.vis-invisivel { background-color: #d1d5db; color: #4b5563; }
+
+
+/* Painel direita */
+.painel-formulario {
+  flex: 1;
+  min-width: 300px;
+}
+
+.painel-formulario h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+.form-adicionar {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-grupo-gestao label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: var(--secondary-color);
+}
+
+.input-grupo-gestao input,
+.input-grupo-gestao textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--secondary-color);
+  border-radius: 8px;
+  background-color: transparent;
+  font-size: 14px;
+  outline: none;
+}
+
+.input-grupo-gestao input:focus,
+.input-grupo-gestao textarea:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.seletores-rapidos {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.btn-seletor {
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+}
+
+.dropdown-categoria-container, button {
+  position: relative;
+  flex: 1;
+  width: 100%;
+}
+
+
+.menu-categorias {
+  position: absolute;
+  bottom: 110%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--secondary-color);
+  border-radius: 20px;
+  padding: 5px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.menu-categorias button {
+  padding: 10px;
+  margin: 2px 0;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.1s;
+}
+.menu-categorias button:hover {
+  transform: scale(1.02);
+}
+
+.btn-adicionar-produto {
+  background-color: var(--secondary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 25px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-adicionar-produto:hover {
+  transition: 0.2s;
+  opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+  .gestao-conteudo {
+    flex-direction: column;
+  }
+  
+  .painel-tabela, .painel-formulario {
+    width: 100%;
+  }
+}
