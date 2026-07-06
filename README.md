@@ -118,7 +118,12 @@ DIALECT=mysql
 DB_USERNAME=root
 PASSWORD=senha_do_banco
 DATABASE=vide_gula
+JWT_SECRET=uma_chave_secreta
+ADMIN_EMAIL=admin@videgula.local
+ADMIN_PASSWORD=Admin@123
 ```
+
+O seeder inicial criará automaticamente um usuário administrador quando não existir nenhum admin no banco.
 
 ---
 
