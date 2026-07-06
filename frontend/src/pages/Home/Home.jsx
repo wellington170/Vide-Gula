@@ -5,6 +5,7 @@ import './Home.css';
 import onda from '../../images/onda_home.png';
 import addWhite from '../../images/add-white.png';
 import addBlack from '../../images/add-black.png';
+import Card from '../../components/Card';
 
 const Home = () => {
   // Dados de exemplo para renderizar os cards dinamicamente
@@ -44,55 +45,23 @@ const Home = () => {
           </div>
           
           <div className="category-circles">
-            <button className="circle-btn"><span className="icon-placeholder">[🍕]</span></button>
-            <button className="circle-btn"><span className="icon-placeholder">[🍔]</span></button>
-            <button className="circle-btn"><span className="icon-placeholder">[🥤]</span></button>
-            <button className="circle-btn"><span className="icon-placeholder">[🍟]</span></button>
+            <button className="circle-btn"><span className="icon-placeholder">🍕</span></button>
+            <button className="circle-btn"><span className="icon-placeholder">🍔</span></button>
+            <button className="circle-btn"><span className="icon-placeholder">🥤</span></button>
+            <button className="circle-btn"><span className="icon-placeholder">🍟</span></button>
           </div>
         </section>
 
         {/* Menu de pizzas */}
         <section className="menu-section">
-          <h2>Pizzas <span className="title-icon">[🍕]</span></h2>
-          <div className="products-grid">
-            {pizzas.map((pizza) => (
-              <div key={pizza.id} className="product-card card-yellow">
-                <img src="https://via.placeholder.com/250x150?text=Foto+Pizza" alt={pizza.nome} className="product-image" />
-                <div className="product-info">
-                  <h3>{pizza.nome}</h3>
-                  <p>{pizza.descricao}</p>
-                  <div className="product-footer">
-                    <button className="add-btn">
-                        <img src={addBlack} alt="Adicionar" />
-                    </button>
-                    <span className="price">R$ <strong>{pizza.preco}</strong></span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <h2>Pizzas <span className="title-icon">🍕</span></h2>
+          <Card produtos={pizzas} icon={addBlack} cardColor="card-yellow" />
         </section>
 
         {/* Menu de burguers */}
         <section className="menu-section">
-          <h2>Burguers <span className="title-icon">[🍔]</span></h2>
-          <div className="products-grid">
-            {burguers.map((burguer) => (
-              <div key={burguer.id} className="product-card card-red">
-                <img src="https://via.placeholder.com/250x150?text=Foto+Burguer" alt={burguer.nome} className="product-image" />
-                <div className="product-info">
-                  <h3>{burguer.nome}</h3>
-                  <p>{burguer.descricao}</p>
-                  <div className="product-footer">
-                    <button className="add-btn">
-                        <img src={addWhite} alt="Adicionar" />
-                    </button>
-                    <span className="price">R$ <strong>{burguer.preco}</strong></span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <h2>Burguers <span className="title-icon">🍔</span></h2>
+          <Card produtos={burguers} icon={addWhite} cardColor="card-red" />
         </section>
     </div>
   );

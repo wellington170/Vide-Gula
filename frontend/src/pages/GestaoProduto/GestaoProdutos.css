@@ -17,7 +17,7 @@
 }
 
 .painel-tabela, .painel-formulario {
-  background-color: #ffb703;
+  background-color: var(--primary-color);
   border-radius: 20px;
   padding: 20px;
 }

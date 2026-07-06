@@ -6,6 +6,7 @@ import Register from './pages/Auth/Register'
 import Home from './pages/Home/Home'
 import Navbar from './components/Navbar'
 import GestaoProdutos from './pages/GestaoProduto/GestaoProdutos'
+import Dashboard from './pages/Dashboard/Dashboard'
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
           <Route path="/produtos" element={<GestaoProdutos />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </>

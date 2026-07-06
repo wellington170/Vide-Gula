@@ -1,0 +1,132 @@
+.dashboard-container {
+  padding: 5px 5% 50px 5%;
+}
+
+.dashboard-section {
+  padding: 0 5%;
+  margin-bottom: 50px;
+}
+
+.dashboard-section h2 {
+  font-size: 30px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-section h3 {
+  font-size: 25px;
+  margin-bottom: 15px;
+}
+
+.content-container {
+  background-color: var(--primary-color);
+  border-radius: 30px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.destaque-numero {
+  background-color: transparent;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+/* Pedidos */
+.lista-pedidos {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.cartao-pedido {
+  background-color: var(--white);
+  border-radius: 16px;
+  min-width: 260px;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  flex: 0;
+}
+
+.etiqueta-status {
+  padding: 10px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--white);
+}
+.status-preparo { background-color: #8c5a45; }
+.status-enviado { background-color: #e65c00; }
+.status-cancelado { background-color: #cc0000; }
+.status-concluido { background-color: #339900; }
+
+.cartao-pedido-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 5px solid #787878;
+  font-size: 14px;
+  color: #000;
+}
+
+.categoria-icons {
+  display: flex;
+  gap: 5px;
+  font-size: 16px;
+}
+
+.id-pedido {
+  font-weight: 700;
+}
+
+.lista-itens-pedido {
+  padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-pedido {
+  font-size: 13px;
+}
+
+.nome-item {
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.obs-item {
+  color: #888;
+  font-size: 11px;
+  padding-left: 18px;
+}
+
+.cartao-pedido-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.btn-opcoes {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+  font-weight: bold;
+  flex: 0;
+}
+
+.hora-pedido {
+  font-size: 13px;
+  color: #333;
+  font-weight: 600;
+}
