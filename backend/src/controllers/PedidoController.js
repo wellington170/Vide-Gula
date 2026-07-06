@@ -36,6 +36,11 @@ const atualizarStatusPedido = async (req, res) => {
   return sendSuccess(res, pedido, 'Status do pedido atualizado com sucesso.');
 };
 
+const excluirPedidoAdmin = async (req, res) => {
+  const resultado = await pedidoService.excluirPedidoAdmin(req.params.id);
+  return sendSuccess(res, resultado, 'Pedido excluído com sucesso.');
+};
+
 module.exports = {
   criarPedido,
   listarPedidosCliente,
@@ -43,5 +48,6 @@ module.exports = {
   cancelarPedidoCliente,
   listarPedidosAdmin,
   consultarPedidoAdmin,
-  atualizarStatusPedido
+  atualizarStatusPedido,
+  excluirPedidoAdmin
 };

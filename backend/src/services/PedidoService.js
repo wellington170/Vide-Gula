@@ -209,6 +209,166 @@ class PedidoService {
     return pedido;
   }
 
+  async excluirPedidoAdmin(pedidoId) {
+    const pedido = await pedidoRepository.findById(pedidoId);
+
+    if (!pedido) {
+      throw ApiError.notFound('Pedido não encontrado.');
+    }
+
+    if (!['CANCELADO', 'ENTREGUE'].includes(pedido.status)) {
+      throw ApiError.badRequest('Só é possível excluir pedidos com status CANCELADO ou ENTREGUE.');
+    }
+
+    await pedido.destroy();
+    return { message: 'Pedido excluído com sucesso.' };
+  }
+
+  /* CART (Pedido with status 'CARRINHO') */
+
+  async getOrCreateCart(usuarioId) {
+    let cart = await pedidoRepository.findCartByUserId(usuarioId);
+    if (cart) return cart;
+
+    // create empty cart
+    const newCart = await pedidoRepository.createOrder({
+      usuarioId,
+      enderecoId: null,
+      formaRecebimento: 'RETIRADA',
+      formaPagamento: 'PIX',
+      trocoPara: 0,
+      taxaEntrega: 0,
+      valorTotal: 0,
+      status: 'CARRINHO',
+      itens: []
+    });
+
+    return pedidoRepository.findByIdWithDetails(newCart.id);
+  }
+
+  async addProductToCart(usuarioId, produtoId, quantidade) {
+    const produto = await produtoRepository.findAvailableById(produtoId);
+    if (!produto) {
+      throw ApiError.badRequest('Produto não encontrado ou indisponível.');
+    }
+
+    const cart = await this.getOrCreateCart(usuarioId);
+
+    // check existing item
+    let item = await itemPedidoRepository.findOne({ where: { pedidoId: cart.id, produtoId } });
+
+    const quantidadeNum = Number(quantidade);
+    if (!Number.isInteger(quantidadeNum) || quantidadeNum <= 0) {
+      throw ApiError.badRequest('Quantidade inválida.');
+    }
+
+    if (!item) {
+      // create item
+      const newItem = await itemPedidoRepository.create({
+        pedidoId: cart.id,
+        produtoId: produto.id,
+        quantidade: quantidadeNum,
+        precoUnitario: Number(produto.precoBase),
+        subtotal: Number(produto.precoBase) * quantidadeNum
+      });
+    } else {
+      // increment quantity
+      const novaQuantidade = Number(item.quantidade) + quantidadeNum;
+      await item.update({ quantidade: novaQuantidade, subtotal: Number(item.precoUnitario) * novaQuantidade });
+    }
+
+    // recalculate total
+    const updated = await pedidoRepository.findByIdWithDetails(cart.id);
+    const total = this.calcularTotal(updated.itens, updated.taxaEntrega);
+    updated.valorTotal = total;
+    if (updated && typeof updated.save === 'function') {
+      await updated.save();
+    }
+
+    return pedidoRepository.findByIdWithDetails(cart.id);
+  }
+
+  async getCart(usuarioId) {
+    const cart = await pedidoRepository.findCartByUserId(usuarioId);
+    if (!cart) {
+      return null;
+    }
+    return cart;
+  }
+
+  async updateCartItemQuantity(usuarioId, produtoId, quantidade) {
+    const cart = await pedidoRepository.findCartByUserId(usuarioId);
+    if (!cart) {
+      throw ApiError.notFound('Carrinho não encontrado.');
+    }
+
+    const item = await itemPedidoRepository.findOne({ where: { pedidoId: cart.id, produtoId } });
+    if (!item) {
+      throw ApiError.notFound('Item não encontrado no carrinho.');
+    }
+
+    const quantidadeNum = Number(quantidade);
+    if (!Number.isInteger(quantidadeNum)) {
+      throw ApiError.badRequest('Quantidade inválida.');
+    }
+
+    if (quantidadeNum <= 0) {
+      await item.destroy();
+    } else {
+      await item.update({ quantidade: quantidadeNum, subtotal: Number(item.precoUnitario) * quantidadeNum });
+    }
+
+    const updated = await pedidoRepository.findByIdWithDetails(cart.id);
+    updated.valorTotal = this.calcularTotal(updated.itens, updated.taxaEntrega);
+    if (updated && typeof updated.save === 'function') {
+      await updated.save();
+    }
+
+    return pedidoRepository.findByIdWithDetails(cart.id);
+  }
+
+  async removeProductFromCart(usuarioId, produtoId) {
+    const cart = await pedidoRepository.findCartByUserId(usuarioId);
+    if (!cart) {
+      throw ApiError.notFound('Carrinho não encontrado.');
+    }
+
+    const item = await itemPedidoRepository.findOne({ where: { pedidoId: cart.id, produtoId } });
+    if (!item) {
+      throw ApiError.notFound('Item não encontrado no carrinho.');
+    }
+
+    await item.destroy();
+
+    const updated = await pedidoRepository.findByIdWithDetails(cart.id);
+    updated.valorTotal = this.calcularTotal(updated.itens, updated.taxaEntrega);
+    if (updated && typeof updated.save === 'function') {
+      await updated.save();
+    }
+
+    return pedidoRepository.findByIdWithDetails(cart.id);
+  }
+
+  async finalizeCart(usuarioId) {
+    const cart = await pedidoRepository.findCartByUserId(usuarioId);
+    if (!cart) {
+      throw ApiError.notFound('Carrinho não encontrado.');
+    }
+
+    if (!cart.itens || cart.itens.length === 0) {
+      throw ApiError.badRequest('Não é possível finalizar um carrinho vazio.');
+    }
+
+    // reuse existing 'RECEBIDO' as finalized status
+    cart.status = 'RECEBIDO';
+    cart.valorTotal = this.calcularTotal(cart.itens, cart.taxaEntrega);
+    if (cart && typeof cart.save === 'function') {
+      await cart.save();
+    }
+
+    return pedidoRepository.findByIdWithDetails(cart.id);
+  }
+
   validarFormaRecebimento(formaRecebimento) {
     if (!FormasRecebimento.includes(formaRecebimento)) {
       throw ApiError.badRequest('Forma de recebimento inválida.');

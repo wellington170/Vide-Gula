@@ -6,6 +6,20 @@ class PedidoRepository extends BaseRepository {
     super(Pedido);
   }
 
+  findCartByUserId(usuarioId) {
+    return this.findOne({
+      where: { usuarioId, status: 'CARRINHO' },
+      include: [
+        {
+          model: ItemPedido,
+          as: 'itens',
+          include: [{ model: Produto, as: 'produto' }]
+        },
+        { model: Endereco, as: 'endereco' }
+      ]
+    });
+  }
+
   findByUserId(usuarioId) {
     return this.findAll({
       where: { usuarioId },
