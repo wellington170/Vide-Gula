@@ -52,22 +52,20 @@ class AuthService {
         email,
         senha: senhaHash,
         perfil: UsuarioPerfis.CLIENTE,
-        enderecos: [
-          {
-            rua: endereco.rua,
-            numero: endereco.numero,
-            bairro: endereco.bairro,
-            cidade: endereco.cidade,
-            estado: endereco.estado,
-            cep: endereco.cep,
-            complemento: endereco.complemento || null,
-            pontoReferencia: endereco.pontoReferencia || null,
-            ativo: true
-          }
-        ]
+        endereco: {
+          rua: endereco.rua,
+          numero: endereco.numero,
+          bairro: endereco.bairro,
+          cidade: endereco.cidade,
+          estado: endereco.estado,
+          cep: endereco.cep,
+          complemento: endereco.complemento || null,
+          pontoReferencia: endereco.pontoReferencia || null,
+          ativo: true
+        }
       },
       {
-        include: [{ model: require('../models').Endereco, as: 'enderecos' }]
+        include: [{ model: require('../models').Endereco, as: 'endereco' }]
       }
     );
 
