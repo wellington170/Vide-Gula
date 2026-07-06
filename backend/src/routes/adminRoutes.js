@@ -16,6 +16,7 @@ router.delete('/admin/produtos/:id', verificarToken, verificarAdmin, asyncHandle
 
 router.get('/admin/pedidos', verificarToken, verificarAdmin, asyncHandler(pedidoController.listarPedidosAdmin));
 router.get('/admin/pedidos/:id', verificarToken, verificarAdmin, asyncHandler(pedidoController.consultarPedidoAdmin));
+router.delete('/admin/pedidos/:id', verificarToken, verificarAdmin, asyncHandler(pedidoController.excluirPedidoAdmin));
 router.patch('/admin/pedidos/:id/status', verificarToken, verificarAdmin, updateStatusRules, validateRequest, asyncHandler(pedidoController.atualizarStatusPedido));
 
 module.exports = router;
