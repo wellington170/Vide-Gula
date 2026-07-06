@@ -7,6 +7,7 @@ import Home from './pages/Home/Home'
 import Navbar from './components/Navbar'
 import GestaoProdutos from './pages/GestaoProduto/GestaoProdutos'
 import Dashboard from './pages/Dashboard/Dashboard'
+import GestaoPedidos from './pages/GestaoPedidos/GestaoPedidos'
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/produtos" element={<GestaoProdutos />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/pedidos" element={<GestaoPedidos />} />
         </Routes>
       </BrowserRouter>
     </>
