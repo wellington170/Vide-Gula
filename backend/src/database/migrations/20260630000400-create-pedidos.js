@@ -2,13 +2,13 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('pedidos', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         allowNull: false,
         primaryKey: true
       },
       usuario_id: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'usuarios',
@@ -18,7 +18,7 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       endereco_id: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         allowNull: true,
         references: {
           model: 'enderecos',

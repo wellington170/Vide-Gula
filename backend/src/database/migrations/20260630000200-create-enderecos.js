@@ -2,14 +2,15 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('enderecos', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         allowNull: false,
         primaryKey: true
       },
       usuario_id: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         allowNull: false,
+        unique: true,
         references: {
           model: 'usuarios',
           key: 'id'
