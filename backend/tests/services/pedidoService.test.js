@@ -113,4 +113,27 @@ describe('PedidoService', () => {
       formaPagamento: 'DINHEIRO'
     })).rejects.toThrow('Falha ao consultar produtos');
   });
+
+  test('deve excluir pedido admin quando o status estiver cancelado ou entregue', async () => {
+    const pedido = { id: 7, status: 'ENTREGUE', destroy: jest.fn().mockResolvedValue(true) };
+    pedidoRepository.findById.mockResolvedValue(pedido);
+
+    const result = await PedidoService.excluirPedidoAdmin(7);
+
+    expect(pedidoRepository.findById).toHaveBeenCalledWith(7);
+    expect(pedido.destroy).toHaveBeenCalledTimes(1);
+    expect(result).toEqual({ message: 'Pedido excluído com sucesso.' });
+  });
+
+  test('deve rejeitar exclusão admin de pedido com status diferente de cancelado ou entregue', async () => {
+    const pedido = { id: 8, status: 'RECEBIDO', destroy: jest.fn() };
+    pedidoRepository.findById.mockResolvedValue(pedido);
+
+    await expect(PedidoService.excluirPedidoAdmin(8)).rejects.toMatchObject({
+      status: 400,
+      message: 'Só é possível excluir pedidos com status CANCELADO ou ENTREGUE.'
+    });
+
+    expect(pedido.destroy).not.toHaveBeenCalled();
+  });
 });
