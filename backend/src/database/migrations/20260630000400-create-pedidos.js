@@ -28,9 +28,9 @@ module.exports = {
         onDelete: 'SET NULL'
       },
       status: {
-        type: Sequelize.ENUM('RECEBIDO', 'EM_PREPARO', 'SAIU_PARA_ENTREGA', 'ENTREGUE', 'CANCELADO'),
+        type: Sequelize.ENUM('CARRINHO', 'RECEBIDO', 'EM_PREPARO', 'SAIU_PARA_ENTREGA', 'ENTREGUE', 'CANCELADO'),
         allowNull: false,
-        defaultValue: 'RECEBIDO'
+        defaultValue: 'CARRINHO'
       },
       forma_recebimento: {
         type: Sequelize.ENUM('DELIVERY', 'RETIRADA'),
