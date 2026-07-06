@@ -3,17 +3,17 @@ module.exports = (sequelize, DataTypes) => {
     'ItemPedido',
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true
       },
       pedidoId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
         field: 'pedido_id'
       },
       produtoId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
         field: 'produto_id'
       },

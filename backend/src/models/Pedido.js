@@ -3,22 +3,22 @@ module.exports = (sequelize, DataTypes) => {
     'Pedido',
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true
       },
       usuarioId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
         field: 'usuario_id'
       },
       enderecoId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: true,
         field: 'endereco_id'
       },
       status: {
-        type: DataTypes.ENUM('RECEBIDO', 'EM_PREPARO', 'SAIU_PARA_ENTREGA', 'ENTREGUE', 'CANCELADO'),
+        type: DataTypes.ENUM('CARRINHO','RECEBIDO', 'EM_PREPARO', 'SAIU_PARA_ENTREGA', 'ENTREGUE', 'CANCELADO'),
         allowNull: false,
         defaultValue: 'RECEBIDO'
       },

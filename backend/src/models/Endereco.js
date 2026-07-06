@@ -3,13 +3,14 @@ module.exports = (sequelize, DataTypes) => {
     'Endereco',
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true
       },
       usuarioId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
+        unique: true,
         field: 'usuario_id'
       },
       rua: {

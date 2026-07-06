@@ -16,10 +16,19 @@ class EnderecoRepository extends BaseRepository {
     });
   }
 
-  findByUserId(usuarioId) {
-    return this.findAll({
+  findByUsuarioId(usuarioId) {
+    return this.findOne({
       where: {
         usuarioId
+      }
+    });
+  }
+
+  findActiveByUsuarioId(usuarioId) {
+    return this.findOne({
+      where: {
+        usuarioId,
+        ativo: true
       }
     });
   }

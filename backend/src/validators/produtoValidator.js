@@ -12,7 +12,7 @@ const createProductRules = [
 ];
 
 const updateProductRules = [
-  param('id').isUUID().withMessage('ID do produto inválido.'),
+  param('id').isInt().withMessage('ID do produto inválido.'),
   body('nome').optional().isString(),
   body('descricao').optional().isString(),
   body('tipo').optional().isIn(ProdutoTipos).withMessage('Tipo de produto inválido.'),

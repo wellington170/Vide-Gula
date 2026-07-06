@@ -16,7 +16,7 @@ const Produto = require('./Produto')(sequelize, DataTypes);
 const Pedido = require('./Pedido')(sequelize, DataTypes);
 const ItemPedido = require('./ItemPedido')(sequelize, DataTypes);
 
-Usuario.hasMany(Endereco, { as: 'enderecos', foreignKey: 'usuarioId' });
+Usuario.hasOne(Endereco, { as: 'endereco', foreignKey: 'usuarioId' });
 Endereco.belongsTo(Usuario, { as: 'usuario', foreignKey: 'usuarioId' });
 
 Usuario.hasMany(Pedido, { as: 'pedidos', foreignKey: 'usuarioId' });

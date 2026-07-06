@@ -13,7 +13,7 @@ class UsuarioRepository extends BaseRepository {
   findByIdWithAddresses(id) {
     return this.findById(id, {
       attributes: { exclude: ['senha'] },
-      include: [{ model: Endereco, as: 'enderecos' }]
+      include: [{ model: Endereco, as: 'endereco' }]
     });
   }
 }
