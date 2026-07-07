@@ -1,5 +1,5 @@
 .gestao-pedidos-container {
-  padding: 10px 5% 50px 20%;
+  padding: 10px 30% 50px 20%;
 }
 
 .gestao-pedidos-container h1 {
@@ -13,7 +13,6 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding-right: 30%;
   gap: 12px;
 }
 
@@ -134,6 +133,9 @@
 }
 
 @media (max-width: 900px) {
+  .gestao-pedidos-container {
+    padding: 10px 5% 50px 5%;
+  }
   .tabela-pedidos-wrapper {
     overflow-x: auto;
   }

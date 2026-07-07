@@ -98,7 +98,7 @@ const GestaoPedidos = () => {
                     <div className="coluna-status">Status</div>
                 </div>
 
-                <div className="tabela-pedidos-body">
+                <div>
                     {pedidos.map((pedido) => {
                         const config = getStatusConfig(pedido.status);
                         return (

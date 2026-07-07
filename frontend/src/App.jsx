@@ -8,6 +8,7 @@ import Navbar from './components/Navbar'
 import GestaoProdutos from './pages/GestaoProduto/GestaoProdutos'
 import Dashboard from './pages/Dashboard/Dashboard'
 import GestaoPedidos from './pages/GestaoPedidos/GestaoPedidos'
+import Carrinho from './pages/Carrinho/Carrinho'
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/produtos" element={<GestaoProdutos />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/pedidos" element={<GestaoPedidos />} />
+          <Route path="/carrinho" element={<Carrinho />} />
         </Routes>
       </BrowserRouter>
     </>
