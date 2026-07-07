@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const ApiError = require('../utils/ApiError');
 const usuarioRepository = require('../repositories/UsuarioRepository');
-const enderecoRepository = require('../repositories/EnderecoRepository');
 const { UsuarioPerfis } = require('../utils/enums');
 
 class AuthService {

@@ -15,23 +15,6 @@ class EnderecoRepository extends BaseRepository {
       }
     });
   }
-
-  findByUsuarioId(usuarioId) {
-    return this.findOne({
-      where: {
-        usuarioId
-      }
-    });
-  }
-
-  findActiveByUsuarioId(usuarioId) {
-    return this.findOne({
-      where: {
-        usuarioId,
-        ativo: true
-      }
-    });
-  }
 }
 
 module.exports = new EnderecoRepository();

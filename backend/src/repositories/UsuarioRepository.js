@@ -1,5 +1,5 @@
 const BaseRepository = require('./BaseRepository');
-const { Usuario, Endereco } = require('../models');
+const { Usuario } = require('../models');
 
 class UsuarioRepository extends BaseRepository {
   constructor() {
@@ -8,13 +8,6 @@ class UsuarioRepository extends BaseRepository {
 
   findByEmail(email) {
     return this.findOne({ where: { email } });
-  }
-
-  findByIdWithAddresses(id) {
-    return this.findById(id, {
-      attributes: { exclude: ['senha'] },
-      include: [{ model: Endereco, as: 'endereco' }]
-    });
   }
 }
 
