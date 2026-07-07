@@ -1,19 +1,27 @@
 {
   "name": "vide-gula",
   "version": "1.0.0",
-  "description": "Sistema Web de Gestão de Pedidos para Delivery e Retirada desenvolvido para a disciplina GCC188 - Engenharia de Software da Universidade Federal de Lavras (UFLA).",
+  "description": "Sistema Web de Gestão de Pedidos para Delivery e Retirada",
   "type": "commonjs",
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "test": "jest --coverage"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.6.0",
+    "sequelize": "^6.33.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "jest": "^30.4.2",
+    "nodemon": "^3.1.14",
+    "sequelize-cli": "^6.6.1"
   }
 }

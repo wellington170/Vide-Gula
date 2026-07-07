@@ -55,6 +55,7 @@ describe('Cart (Pedido as cart)', () => {
     expect(result.id).toBe(6);
   });
 
+<<<<<<< HEAD
   test('should not finalize cart while client already has an active order', async () => {
     pedidoRepository.findByUserId.mockResolvedValue([{ id: 10, status: 'RECEBIDO' }]);
     pedidoRepository.findCartByUserId.mockResolvedValue({ id: 7, itens: [{ produtoId: 1, subtotal: 10 }] });
@@ -65,6 +66,8 @@ describe('Cart (Pedido as cart)', () => {
     });
   });
 
+=======
+>>>>>>> origin/back
   test('should not finalize empty cart', async () => {
     pedidoRepository.findCartByUserId.mockResolvedValue({ id: 7, itens: [] });
 

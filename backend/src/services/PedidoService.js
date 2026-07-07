@@ -8,8 +8,11 @@ const { FormasRecebimento, FormasPagamento, StatusPedido } = require('../utils/e
 
 class PedidoService {
   async criarPedido(usuarioId, payload) {
+<<<<<<< HEAD
     await this.validarPedidoEmAndamento(usuarioId);
 
+=======
+>>>>>>> origin/back
     const { items, formaRecebimento, formaPagamento, enderecoId, taxaEntrega = 0, trocoPara = 0 } = payload;
 
     this.validarFormaRecebimento(formaRecebimento);
@@ -229,8 +232,11 @@ class PedidoService {
   /* CART (Pedido with status 'CARRINHO') */
 
   async getOrCreateCart(usuarioId) {
+<<<<<<< HEAD
     await this.validarPedidoEmAndamento(usuarioId);
 
+=======
+>>>>>>> origin/back
     let cart = await pedidoRepository.findCartByUserId(usuarioId);
     if (cart) return cart;
 
@@ -354,8 +360,11 @@ class PedidoService {
   }
 
   async finalizeCart(usuarioId) {
+<<<<<<< HEAD
     await this.validarPedidoEmAndamento(usuarioId);
 
+=======
+>>>>>>> origin/back
     const cart = await pedidoRepository.findCartByUserId(usuarioId);
     if (!cart) {
       throw ApiError.notFound('Carrinho não encontrado.');
@@ -375,6 +384,7 @@ class PedidoService {
     return pedidoRepository.findByIdWithDetails(cart.id);
   }
 
+<<<<<<< HEAD
   async validarPedidoEmAndamento(usuarioId) {
     const pedidosDoCliente = await pedidoRepository.findByUserId(usuarioId);
     const possuiPedidoAtivo = (pedidosDoCliente || []).some((pedido) => !['ENTREGUE', 'CANCELADO'].includes(pedido.status));
@@ -384,6 +394,8 @@ class PedidoService {
     }
   }
 
+=======
+>>>>>>> origin/back
   validarFormaRecebimento(formaRecebimento) {
     if (!FormasRecebimento.includes(formaRecebimento)) {
       throw ApiError.badRequest('Forma de recebimento inválida.');
