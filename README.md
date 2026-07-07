@@ -2,75 +2,132 @@
 
 Sistema Web de Gestão de Pedidos para Delivery e Retirada desenvolvido para a disciplina **GCC188 - Engenharia de Software** da **Universidade Federal de Lavras (UFLA)**.
 
-O projeto foi idealizado a partir de uma necessidade real observada na **Vide Gula Lanches e Pizzas**, buscando modernizar o processo de atendimento, reduzir a dependência de pedidos por telefone e WhatsApp e fortalecer a presença digital da empresa.
+O projeto foi criado para a Vide Gula Lanches e Pizzas com o objetivo de digitalizar o processo de pedidos, reduzir a dependência de anotações manuais e mensagens via WhatsApp, e oferecer uma interface de pedidos online para clientes e equipe.
 
 ---
 
 ## 👥 Integrantes
 
-* João Victor Arantes
-* Pedro Henrique Fonseca Resende
-* Wellington Costa Grilo Pereira
+- João Victor Arantes
+- Pedro Henrique Fonseca Resende
+- Wellington Costa Grilo Pereira
 
 ---
 
-## 🎯 Contexto do Problema
+## 🎯 Problema
 
-A lanchonete **Vide Gula Lanches e Pizzas** realiza atualmente o atendimento de pedidos de forma predominantemente manual.
+A Vide Gula Lanches e Pizzas realiza grande parte dos atendimentos manualmente. Pedidos presenciais são anotados em papel e os pedidos remotos chegam por telefone ou WhatsApp.
 
-Os pedidos presenciais são anotados em papel, enquanto os pedidos remotos são recebidos por telefone ou WhatsApp e passados para o papel manualmente. Como o atendimento está centralizado em um único aparelho telefônico, durante horários de maior movimento ocorre uma sobrecarga no processo de atendimento, tanto do Whatsapp, tanto dos outros dois telefones fixos.
-
-Além disso, os pedidos realizados via WhatsApp dependem que algum funcionário acompanhe constantemente as mensagens recebidas. Em muitos momentos, devido à rotina operacional da lanchonete, as mensagens não são respondidas com a rapidez esperada pelos clientes, gerando atrasos no atendimento e possíveis perdas de vendas.
-
-Outro problema identificado é a baixa presença digital da empresa. Atualmente a Vide Gula possui apenas cadastro no Google, não possuindo um site próprio para divulgação da marca e realização de pedidos online, ficando dependente do atendimento manual.. 
+Essa operação centralizada em poucos aparelhos causa atraso no atendimento, sobrecarga de comunicação e dependência do acompanhamento constante do WhatsApp. O projeto também visa melhorar a presença digital da empresa.
 
 ---
 
-## 💡 Solução Proposta
+## 💡 Solução
 
-Plataforma web para realização e gerenciamento de pedidos online, incluindo:
+Plataforma web para atendimento de pedidos com:
 
 - Cadastro e autenticação de usuários
 - Catálogo digital de produtos
 - Realização e acompanhamento de pedidos
 - Delivery e retirada no local
-- Área administrativa
+- Área administrativa para gerenciamento
 
-## 🚀 Tecnologias Utilizadas
+---
+
+## 🚀 Tecnologias
 
 ### Frontend
-- React 19
-- Vite 7
+
+- React 19.2.7
+- Vite 8.1.0
+- React Router Dom 7.18.1
+- Redux Toolkit 2.12.0
 - JavaScript
-- Bootstrap 5
-- Axios
 
 ### Backend
-- Node.js 22
-- Express
-- Sequelize ORM
-- JWT
 
-### Banco de Dados
+- Node.js 22
+- Express 5.2.1
+- Sequelize 6.33.2
+- JWT
 - MySQL 8
 
 ### Testes
+
 - Jest
-- Selenium IDE
+- Selenium
 
-## 🖥️ Instruções para Uso
+---
 
-### Pré-requisitos
+## 🧩 Estrutura do Projeto
+
+```text
+Vide-Gula/
+├── backend/
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── database/
+│   │   ├── middlewares/
+│   │   ├── models/
+│   │   ├── repositories/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── validators/
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── images/
+│   │   ├── pages/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   └── package.json
+├── docs/
+├── padroes_adotados/
+└── README.md
+```
+
+---
+
+## 🛠️ Pré-requisitos
 
 - Node.js 22+
+- npm
 - MySQL 8+
 - Git
 
-### Banco de Dados
+---
+
+## 🔧 Configuração do Banco de Dados
+
+No MySQL, crie o banco de dados:
 
 ```sql
 CREATE DATABASE vide_gula;
 ```
+
+O backend utiliza variáveis de ambiente em `backend/src/config/database.js`. Crie um arquivo `.env` em `backend/` com:
+
+```env
+PORT=3000
+HOST=127.0.0.1
+DB_PORT=3306
+DIALECT=mysql
+DB_USERNAME=root
+PASSWORD=senha_do_banco
+DATABASE=vide_gula
+JWT_SECRET=uma_chave_secreta
+ADMIN_EMAIL=admin@videgula.local
+ADMIN_PASSWORD=Admin@123
+```
+
+O seeder inicial criará automaticamente um usuário administrador quando não existir nenhum admin no banco.
+
+---
+
+## ▶️ Executando o Projeto
 
 ### Backend
 
@@ -88,241 +145,61 @@ npm install
 npm run dev
 ```
 
-## 👨‍💻 Instruções para Desenvolvedores
+---
 
-### Clonar o Projeto
+## 🧪 Testes
+
+No backend:
 
 ```bash
-git clone https://github.com/SEU-USUARIO/vide-gula-lanches-pizzas.git
+cd backend
+npm test
 ```
 
-### Instalar Dependências
+---
+
+## 🚀 Comandos Úteis
+
+### Rodar backend em produção
+
+```bash
+cd backend
+npm start
+```
+
+### Verificar frontend localmente
 
 ```bash
 cd frontend
-npm install
-
-cd ../backend
-npm install
+npm run preview
 ```
 
-### Executar
-
-Backend:
+### Lint frontend
 
 ```bash
-npm run dev
+cd frontend
+npm run lint
 ```
 
-Frontend:
+---
+
+## 📦 Migrações
+
+Para aplicar migrações do Sequelize no backend:
 
 ```bash
-npm run dev
+cd backend
+npx sequelize-cli db:migrate
 ```
 
 ---
 
-## 🗄️ Modelo de Dados Inicial
+## 📚 Observações
 
-O sistema foi modelado para atender às necessidades da Vide Gula Lanches e Pizzas, permitindo o gerenciamento de clientes, endereços, produtos e pedidos.
+- O backend carrega `dotenv` em `backend/src/server.js` e `backend/src/config/database.js`.
+- O repositório não inclui um arquivo `.env`; crie-o localmente para execução.
+- O frontend está construído em React com páginas, componentes e roteamento.
 
-### Principais Entidades
-#### Usuário
-
-Responsável pelo acesso administrativo ao sistema.
-
-- id
-- nome
-- email
-- senha
-- perfil
-
-#### Cliente
-
-Representa os clientes que realizam pedidos na plataforma.
-
-- id
-- nome
-- telefone
-
-#### Endereço
-
-Permite que um cliente possua um ou mais endereços cadastrados para entrega.
-
-- id
-- cliente_id
-- rua
-- número
-- complemento
-- bairro
-- cidade
-- estado
-- cep
-- referência
-
-#### Produto
-
-Representa os itens vendidos pela lanchonete, como hambúrgueres, pizzas, porções e bebidas.
-
-- id
-- nome
-- categoria
-- preço
-- descrição
-
-#### Pedido
-
-Representa a compra realizada pelo cliente.
-
-- id
-- cliente_id
-- endereço_entrega
-- tipo (Delivery ou Retirada)
-- data_hora
-- status
-- valor_total
-
-#### ItemPedido
-
-Produtos associados a um pedido.
-
-- id
-- pedido_id
-- produto_id
-- tamanho
-- quantidade
-
-#### Relacionamentos Principais
-
-- Um cliente pode possuir vários endereços.
-- Um cliente pode realizar vários pedidos.
-- Um pedido pode conter vários itens.
-- Um item de pedido está associado a um produto.
-- Um produto pode estar presente em vários pedidos.
-
-### Operação Principal do Sistema
-
-A principal operação do sistema é o gerenciamento de pedidos, envolvendo as seguintes entidades:
-
-- Cliente
-- Endereço
-- Pedido
-- ItemPedido
-- Produto
-
---- 
-
-## 📁 Organização do Projeto
-
-```text
-```text
-vide-gula-lanches-pizzas/
-│
-├── frontend/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── hooks/
-│   │   ├── contexts/
-│   │   ├── routes/
-│   │   ├── utils/
-│   │   ├── styles/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   │
-│   ├── package.json
-│   └── vite.config.js
-│
-├── backend/
-│   ├── src/
-│   │   ├── config/
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   ├── middlewares/
-│   │   ├── database/
-│   │   └── utils/
-│   │
-│   ├── package.json
-│   ├── .env
-│   └── server.js
-│
-├── docs/
-│   ├── requisitos/
-│   ├── diagramas/
-│   ├── atas/
-│   └── apresentacoes/
-│
-├── padroes-adotados/
-│   ├── regras-verificacao-requisitos.md
-│   ├── padrao-commits.md
-│   └── padrao-nomenclatura.md
-│
-├── testes/
-│   ├── unidade/
-│   ├── selenium/
-│   └── evidencias/
-│
-├── .gitignore
-├── README.md
-└── LICENSE
-```
-### Descrição das Pastas
-
-#### Frontend
-
-- **assets/**: imagens, ícones e arquivos estáticos.
-- **components/**: componentes reutilizáveis da interface.
-- **pages/**: páginas do sistema.
-- **services/**: comunicação com a API.
-- **hooks/**: hooks customizados do React.
-- **contexts/**: gerenciamento de estado global.
-- **routes/**: definição das rotas da aplicação.
-- **utils/**: funções utilitárias.
-- **styles/**: estilos globais.
-
-#### Backend
-
-- **controllers/**: endpoints da API REST.
-- **services/**: regras de negócio.
-- **models/**: entidades e modelos do banco de dados.
-- **routes/**: definição das rotas da API.
-- **middlewares/**: autenticação, autorização e tratamento de erros.
-- **database/**: configuração do banco, migrations e seeders.
-- **config/**: configurações da aplicação.
-- **utils/**: funções auxiliares.
-```
-#### Documentação
-
-- **docs/**: documentação do projeto.
-- **padroes-adotados/**: padrões definidos pela equipe.
-- **testes/**: roteiros, scripts e evidências de testes.
-
-
----
-
-## 🔖 Controle de Versão
-
-O projeto utiliza Git e GitHub para controle de versão.
-
-Todos os integrantes devem:
-
-* Trabalhar em branches próprias;
-* Realizar commits frequentes;
-* Utilizar Pull Requests para integração;
-* Manter o histórico de desenvolvimento atualizado.
-
----
-
-## 📦 Primeira Release
-
-A primeira baseline do projeto será registrada através da tag:
-
-```text
-v0.1
 ```
 
 Esta versão conterá:

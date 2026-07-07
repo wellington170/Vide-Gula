@@ -1,0 +1,307 @@
+{
+	"info": {
+		"_postman_id": "112c5a9b-ced6-480c-8981-fb9e47839a27",
+		"name": "VideGula",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49422702",
+		"_collection_link": "https://resndph-7296066.postman.co/workspace/Pedro-Resende's-Workspace~a09b47bc-e1d1-43ed-811a-d66699630667/collection/49422702-112c5a9b-ced6-480c-8981-fb9e47839a27?action=share&source=collection_link&creator=49422702"
+	},
+	"item": [
+		{
+			"name": "ClienteRoutes",
+			"item": [
+				{
+					"name": "show",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE5MmRiYzE1LTZlZTktNDY5NS1hODYzLTg0NzNkYjI4ZWUzMCIsInBlcmZpbCI6IkNMSUVOVEUiLCJpYXQiOjE3ODI4NDU1NTMsImV4cCI6MTc4MjkzMTk1M30.CSgYnRO6AAWiob762F9WHnJatmwitEQbMKGdQ4vdY1g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Maria de Fátima Silva\",\n  \"telefone\": \"35988888888\",\n  \"email\": \"marianova@email.com\",\n  \"senha\": \"novasenha123\",\n  \"confirmarSenha\": \"novasenha123\",\n  \"endereco\": {\n    \"id\": \"uuid-do-endereco-existente\",\n    \"rua\": \"Nova Rua\",\n    \"numero\": \"321\",\n    \"bairro\": \"Novo Centro\",\n    \"cidade\": \"Lavras\",\n    \"estado\": \"MG\",\n    \"cep\": \"37200-111\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/perfil",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"perfil"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AdminRoutes",
+			"item": [
+				{
+					"name": "CadastProdutos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE5MmRiYzE1LTZlZTktNDY5NS1hODYzLTg0NzNkYjI4ZWUzMCIsInBlcmZpbCI6IkNMSUVOVEUiLCJpYXQiOjE3ODI4NDU1NTMsImV4cCI6MTc4MjkzMTk1M30.CSgYnRO6AAWiob762F9WHnJatmwitEQbMKGdQ4vdY1g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TokenPesquisadorADMIN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"X-Bacon\",\n  \"descricao\": \"Pão, hambúrguer, queijo, bacon, alface e tomate.\",\n  \"tipo\": \"LANCHE\",\n  \"precoBase\": 25.50,\n  \"imagem\": \"url_da_imagem.jpg\",\n  \"ativo\": true,\n  \"disponivel\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/admin/produtos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"admin",
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PedidoRoutes",
+			"item": [
+				{
+					"name": "CriaPedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE5MmRiYzE1LTZlZTktNDY5NS1hODYzLTg0NzNkYjI4ZWUzMCIsInBlcmZpbCI6IkNMSUVOVEUiLCJpYXQiOjE3ODI4NDU1NTMsImV4cCI6MTc4MjkzMTk1M30.CSgYnRO6AAWiob762F9WHnJatmwitEQbMKGdQ4vdY1g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TokenPesquisadorADMIN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"items\": [\n    {\n      \"produtoId\": \"uuid-do-produto\",\n      \"quantidade\": 2,\n      \"observacao\": \"Sem maionese\"\n    }\n  ],\n  \"formaRecebimento\": \"DELIVERY\",\n  \"formaPagamento\": \"DINHEIRO\",\n  \"enderecoId\": \"uuid-do-endereco-de-entrega\",\n  \"taxaEntrega\": 7.50,\n  \"trocoPara\": 100.00\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/pedidos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ProdutosRoutes",
+			"item": [
+				{
+					"name": "Cardápio",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE5MmRiYzE1LTZlZTktNDY5NS1hODYzLTg0NzNkYjI4ZWUzMCIsInBlcmZpbCI6IkNMSUVOVEUiLCJpYXQiOjE3ODI4NDU1NTMsImV4cCI6MTc4MjkzMTk1M30.CSgYnRO6AAWiob762F9WHnJatmwitEQbMKGdQ4vdY1g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome_estacao\": \"Estação Central\",\n  \"cep\": \"12345678\",\n  \"logradouro\": \"Rua das Flores\",\n  \"numero\": \"123\",\n  \"bairro\": \"Centro\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"latitude\": -23.55052,\n  \"longitude\": -46.633308,\n  \"data_ativacao\": \"2025-01-10T10:00:00Z\",\n  \"tecnicos_ids\": [1, 2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/cardapio",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"cardapio"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenTecnicoADMIN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"pedro.resende@email.com\",\n    \"senha\": \"12345678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "health",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenTecnicoADMIN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"Ana Lima\",\n  \"email\": \"ana@example.com\",\n  \"password\": \"senha123\",\n  \"area_atuacao\": \"Qualidade da água\",\n  \"instituicao_vinculo\": \"Universidade Federal\",\n  \"nivel_formacao\": \"Mestrado\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/health",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "TokenTecnicoADMIN",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "TokenTecnico",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "TokenPesquisadorADMIN",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "TokenPEsquisador",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
