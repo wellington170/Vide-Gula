@@ -1,0 +1,134 @@
+{
+  "info": {
+    "name": "VideGula API - Tests",
+    "_postman_id": "videgula-api-tests-001",
+    "description": "Collection with tests for VideGula backend routes.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://127.0.0.1:3000" },
+    { "key": "token", "value": "" },
+    { "key": "adminToken", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register (Cliente)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maria Teste\",\n  \"telefone\": \"35988888888\",\n  \"email\": \"cliente@teste.local\",\n  \"senha\": \"cliente123\",\n  \"confirmarSenha\": \"cliente123\",\n  \"endereco\": {\n    \"rua\": \"Rua das Flores\",\n    \"numero\": \"123\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"São Paulo\",\n    \"estado\": \"SP\",\n    \"cep\": \"01000-000\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth","register"] }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201 or 200', function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@videgula.local\",\n  \"senha\": \"Admin@123\"\n}" },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth","login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Login successful', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  var json = pm.response.json();",
+                  "  pm.expect(json.success).to.be.true;",
+                  "  pm.expect(json.data.token).to.exist;",
+                  "  pm.collectionVariables.set('adminToken', json.data.token);",
+                  "  pm.collectionVariables.set('token', json.data.token);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Produtos",
+      "item": [
+        {
+          "name": "Listar Produtos",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/produtos", "host": ["{{baseUrl}}"], "path": ["produtos"] } },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status 200', ()=> pm.response.to.have.status(200));"] } }]
+        },
+        {
+          "name": "Cadastrar Produto (admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Teste Produto\",\n  \"descricao\": \"Descrição teste\",\n  \"tipo\": \"LANCHE\",\n  \"precoBase\": 9.90,\n  \"imagem\": \"teste.jpg\",\n  \"ativo\": true,\n  \"disponivel\": true\n}" },
+            "url": { "raw": "{{baseUrl}}/admin/produtos", "host": ["{{baseUrl}}"], "path": ["admin","produtos"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Created or OK', ()=> pm.expect(pm.response.code).to.be.oneOf([200,201]));"] } }]
+        }
+      ]
+    },
+    {
+      "name": "Pedidos",
+      "item": [
+        {
+          "name": "Criar Pedido",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"items\": [{ \"produtoId\": 1, \"quantidade\": 1 }],\n  \"formaRecebimento\": \"RETIRADA\",\n  \"formaPagamento\": \"PIX\"\n}" },
+            "url": { "raw": "{{baseUrl}}/pedidos", "host": ["{{baseUrl}}"], "path": ["pedidos"] }
+          },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Pedido criado OK', ()=> pm.expect(pm.response.code).to.be.oneOf([200,201]));"] } }]
+        },
+        { "name": "Listar Meus Pedidos", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/pedidos", "host": ["{{baseUrl}}"], "path": ["pedidos"] } }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status 200', ()=> pm.response.to.have.status(200));"] } }] }
+      ]
+    },
+    {
+      "name": "Carrinho",
+      "item": [
+        {
+          "name": "Adicionar Produto ao Carrinho",
+          "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ], "body": { "mode": "raw", "raw": "{ \"produtoId\": 1, \"quantidade\": 1 }" }, "url": { "raw": "{{baseUrl}}/carrinho/produtos", "host": ["{{baseUrl}}"], "path": ["carrinho","produtos"] } },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Added to cart', ()=> pm.response.to.have.status(200));"] } }]
+        },
+        { "name": "Visualizar Carrinho", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/carrinho", "host": ["{{baseUrl}}"], "path": ["carrinho"] } }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status 200 or 204', ()=> pm.expect(pm.response.code).to.be.oneOf([200,204]));"] } }] },
+        { "name": "Alterar Quantidade no Carrinho", "request": { "method": "PATCH", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ], "body": { "mode": "raw", "raw": "{ \"quantidade\": 2 }" }, "url": { "raw": "{{baseUrl}}/carrinho/produtos/1", "host": ["{{baseUrl}}"], "path": ["carrinho","produtos","1"] } }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Updated', ()=> pm.response.to.have.status(200));"] } }] },
+        { "name": "Remover Produto do Carrinho", "request": { "method": "DELETE", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/carrinho/produtos/1", "host": ["{{baseUrl}}"], "path": ["carrinho","produtos","1"] } }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Removed', ()=> pm.response.to.have.status(200));"] } }] },
+        { "name": "Finalizar Carrinho", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/carrinho/finalizar", "host": ["{{baseUrl}}"], "path": ["carrinho","finalizar"] } }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Finalized', ()=> pm.response.to.have.status(200));"] } }] }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        { "name": "Listar Pedidos (admin)", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{adminToken}}" } ], "url": { "raw": "{{baseUrl}}/admin/pedidos", "host": ["{{baseUrl}}"], "path": ["admin","pedidos"] } }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status 200', ()=> pm.response.to.have.status(200));"] } }] },
+        { "name": "Consultar Pedido (admin)", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{adminToken}}" } ], "url": { "raw": "{{baseUrl}}/admin/pedidos/1", "host": ["{{baseUrl}}"], "path": ["admin","pedidos","1"] } }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status 200 or 404', ()=> pm.expect(pm.response.code).to.be.oneOf([200,404]));"] } }] },
+        { "name": "Alterar Status (admin)", "request": { "method": "PATCH", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{adminToken}}" } ], "body": { "mode": "raw", "raw": "{ \"status\": \"EM_PREPARO\" }" }, "url": { "raw": "{{baseUrl}}/admin/pedidos/1/status", "host": ["{{baseUrl}}"], "path": ["admin","pedidos","1","status"] } }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status changed or bad request', ()=> pm.expect(pm.response.code).to.be.oneOf([200,400,404]));"] } }] }
+      ]
+    }
+  ]
+}
