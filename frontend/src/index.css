@@ -1,0 +1,59 @@
+:root {
+  --primary-color: #ffaa00;
+  --secondary-color: #5c1c1c;
+  --text-dark: #333333;
+  --text-light: #888888;
+  --border-color: #cccccc;
+  --white: #ffffff;
+  --card-yellow: #FBE697;
+  --card-red: #C55A46;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn-primary:hover {
+  transition: 0.3s ease;
+  opacity: 0.9;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  font-size: 16px;
+  color: var(--text-dark);
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+}
+
+.input-group input:focus {
+  transition: 0.3s;
+  border-color: var(--primary-color);
+}
