@@ -76,15 +76,7 @@ const Carrinho = () => {
         }
     };
 
-    const finalizarPedido = async () => {
-        if (itens.length === 0) {
-            alert('Carrinho vazio!');
-            return;
-        }
-
-        setLoading(true);
-        setError('');
-
+    const atualizarPedido = async () => {
         try {
             const pedidoData = {
                 items: itens.map(i => ({
@@ -107,6 +99,25 @@ const Carrinho = () => {
             const carrinho = await cartService.visualizarCarrinho();
             console.log(carrinho);
             await orderService.atualizarPedidoCliente(user.usuarioId, carrinho.id, pedidoData);
+        } catch (error) {
+            console.error('Erro ao atualizar pedido:', err);
+            setError('Erro ao atualizar pedido. Tente novamente.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const finalizarPedido = async () => {
+        if (itens.length === 0) {
+            alert('Carrinho vazio!');
+            return;
+        }
+
+        setLoading(true);
+        setError('');
+
+        try {
+            atualizarPedido();
             await cartService.finalizarCarrinho(user.usuarioId);
 
             // Limpa o carrinho
@@ -189,7 +200,7 @@ const Carrinho = () => {
                                         name="entrega" 
                                         value="RETIRADA"
                                         checked={entregaSelecionada === 'RETIRADA'}
-                                        onChange={(e) => setEntregaSelecionada(e.target.value)}
+                                        onChange={(e) => {setEntregaSelecionada(e.target.value); atualizarPedido()}}
                                     />
                                     Retirada na loja
                                 </label>
@@ -199,7 +210,7 @@ const Carrinho = () => {
                                         name="entrega" 
                                         value="DELIVERY"
                                         checked={entregaSelecionada === 'DELIVERY'}
-                                        onChange={(e) => setEntregaSelecionada(e.target.value)}
+                                        onChange={(e) => {setEntregaSelecionada(e.target.value); atualizarPedido()}}
                                     />
                                     Entrega em casa
                                 </label>

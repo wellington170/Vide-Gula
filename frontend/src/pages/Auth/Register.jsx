@@ -59,6 +59,7 @@ const Register = () => {
         endereco
       );
       dispatch(registerSuccess(response.data));
+      alert('Conta criada com sucesso!');
       navigate('/');
     } catch (err) {
       const errorMessage = err?.message || 'Erro ao criar conta';
