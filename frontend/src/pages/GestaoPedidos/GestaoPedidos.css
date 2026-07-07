@@ -1,0 +1,146 @@
+.gestao-pedidos-container {
+  padding: 10px 30% 50px 20%;
+}
+
+.gestao-pedidos-container h1 {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 25px;
+  color: var(--secondary-color);
+}
+
+.tabela-pedidos-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tabela-pedidos-header, 
+.linha-pedido-gestao {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.coluna-id { flex: 1; text-align: center; justify-content: center; }
+.coluna-pedido { flex: 2.5; text-align: center; }
+.coluna-endereco { flex: 3; text-align: center; }
+.coluna-total { flex: 1.2; text-align: center; }
+.coluna-status { flex: 1.8; display: flex; justify-content: center; }
+
+.tabela-pedidos-header {
+  font-size: 16px;
+  color: #888888;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.linha-pedido-gestao {
+  background-color: #C4C4C4;
+  border-radius: 15px;
+  min-height: 55px;
+  padding: 8px 20px;
+  margin-bottom: 10px;
+}
+
+.linha-pedido-gestao:hover {
+  transition: 0.15s;
+  background-color: #b8b8b8;
+  transform: translateY(-2px);
+}
+
+.conteudo-celula {
+  padding: 0 15px;
+  font-size: 14px;
+  color: #2c2c2c;
+  font-weight: 600;
+  border-right: 2px solid #A9A9A9;
+  min-height: 35px;
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+}
+
+.coluna-status.conteudo-celula {
+  border-right: none;
+}
+
+.coluna-total.conteudo-celula {
+  justify-content: center;
+}
+
+.valor-total-destaque {
+  color: #000000;
+  font-weight: 700;
+}
+
+.badge-status-linha {
+  padding: 8px 20px;
+  border-radius: 20px;
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 130px;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.status-preparo { background-color: var(--secondary-color); }
+.status-enviado { background-color: var(--primary-color); }
+.status-cancelado { background-color: #cc0000; }
+.status-concluido { background-color: #339900; }
+
+.dropdown-status-container, button {
+  position: relative;
+  flex: 1;
+  width: 100%;
+}
+
+
+.pedidos-categorias {
+  position: absolute;
+  bottom: 110%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--secondary-color);
+  border-radius: 20px;
+  padding: 5px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.pedidos-categorias button {
+  padding: 8px 20px;
+  margin: 2px 0;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.pedidos-categorias button:hover {
+  transition: 0.1s;
+  transform: scale(1.02);
+}
+
+@media (max-width: 900px) {
+  .gestao-pedidos-container {
+    padding: 10px 5% 50px 5%;
+  }
+  .tabela-pedidos-wrapper {
+    overflow-x: auto;
+  }
+  .tabela-pedidos-header, 
+  .linha-pedido-gestao {
+    min-width: 850px;
+  }
+}
