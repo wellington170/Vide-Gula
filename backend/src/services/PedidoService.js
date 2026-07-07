@@ -8,11 +8,8 @@ const { FormasRecebimento, FormasPagamento, StatusPedido } = require('../utils/e
 
 class PedidoService {
   async criarPedido(usuarioId, payload) {
-<<<<<<<<< Temporary merge branch 1
-=========
     await this.validarPedidoEmAndamento(usuarioId);
 
->>>>>>>>> Temporary merge branch 2
     const { items, formaRecebimento, formaPagamento, enderecoId, taxaEntrega = 0, trocoPara = 0 } = payload;
 
     this.validarFormaRecebimento(formaRecebimento);
@@ -232,11 +229,8 @@ class PedidoService {
   /* CART (Pedido with status 'CARRINHO') */
 
   async getOrCreateCart(usuarioId) {
-<<<<<<<<< Temporary merge branch 1
-=========
     await this.validarPedidoEmAndamento(usuarioId);
 
->>>>>>>>> Temporary merge branch 2
     let cart = await pedidoRepository.findCartByUserId(usuarioId);
     if (cart) return cart;
 
@@ -360,11 +354,8 @@ class PedidoService {
   }
 
   async finalizeCart(usuarioId) {
-<<<<<<<<< Temporary merge branch 1
-=========
     await this.validarPedidoEmAndamento(usuarioId);
 
->>>>>>>>> Temporary merge branch 2
     const cart = await pedidoRepository.findCartByUserId(usuarioId);
     if (!cart) {
       throw ApiError.notFound('Carrinho não encontrado.');
@@ -384,8 +375,6 @@ class PedidoService {
     return pedidoRepository.findByIdWithDetails(cart.id);
   }
 
-<<<<<<<<< Temporary merge branch 1
-=========
   async validarPedidoEmAndamento(usuarioId) {
     const pedidosDoCliente = await pedidoRepository.findByUserId(usuarioId);
     const possuiPedidoAtivo = (pedidosDoCliente || []).some((pedido) => !['ENTREGUE', 'CANCELADO'].includes(pedido.status));
@@ -395,7 +384,6 @@ class PedidoService {
     }
   }
 
->>>>>>>>> Temporary merge branch 2
   validarFormaRecebimento(formaRecebimento) {
     if (!FormasRecebimento.includes(formaRecebimento)) {
       throw ApiError.badRequest('Forma de recebimento inválida.');

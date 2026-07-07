@@ -55,8 +55,6 @@ describe('Cart (Pedido as cart)', () => {
     expect(result.id).toBe(6);
   });
 
-<<<<<<<<< Temporary merge branch 1
-=========
   test('should not finalize cart while client already has an active order', async () => {
     pedidoRepository.findByUserId.mockResolvedValue([{ id: 10, status: 'RECEBIDO' }]);
     pedidoRepository.findCartByUserId.mockResolvedValue({ id: 7, itens: [{ produtoId: 1, subtotal: 10 }] });
@@ -67,7 +65,6 @@ describe('Cart (Pedido as cart)', () => {
     });
   });
 
->>>>>>>>> Temporary merge branch 2
   test('should not finalize empty cart', async () => {
     pedidoRepository.findCartByUserId.mockResolvedValue({ id: 7, itens: [] });
 
