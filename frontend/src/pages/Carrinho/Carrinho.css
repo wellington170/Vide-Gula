@@ -66,10 +66,6 @@
   border-right: none;
 }
 
-.coluna-subtotal.conteudo-celula-carrinho {
-  justify-content: center;
-}
-
 .btn-add,
 .btn-delete,
 .btn-subtract {

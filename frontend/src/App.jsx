@@ -9,6 +9,7 @@ import GestaoProdutos from './pages/GestaoProduto/GestaoProdutos'
 import Dashboard from './pages/Dashboard/Dashboard'
 import GestaoPedidos from './pages/GestaoPedidos/GestaoPedidos'
 import Carrinho from './pages/Carrinho/Carrinho'
+import AcompanharPedido from './pages/AcompanharPedido/AcompanharPedido'
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/pedidos" element={<GestaoPedidos />} />
           <Route path="/carrinho" element={<Carrinho />} />
+          <Route path="/acompanhar-pedido" element={<AcompanharPedido />} />
         </Routes>
       </BrowserRouter>
     </>
