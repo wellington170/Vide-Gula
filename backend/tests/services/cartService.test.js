@@ -55,6 +55,16 @@ describe('Cart (Pedido as cart)', () => {
     expect(result.id).toBe(6);
   });
 
+  test('should not finalize cart while client already has an active order', async () => {
+    pedidoRepository.findByUserId.mockResolvedValue([{ id: 10, status: 'RECEBIDO' }]);
+    pedidoRepository.findCartByUserId.mockResolvedValue({ id: 7, itens: [{ produtoId: 1, subtotal: 10 }] });
+
+    await expect(PedidoService.finalizeCart(4)).rejects.toMatchObject({
+      status: 400,
+      message: 'Você já possui um pedido em andamento. Finalize ou espere a entrega para realizar um novo pedido.'
+    });
+  });
+
   test('should not finalize empty cart', async () => {
     pedidoRepository.findCartByUserId.mockResolvedValue({ id: 7, itens: [] });
 

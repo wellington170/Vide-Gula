@@ -94,6 +94,22 @@ describe('PedidoService', () => {
     expect(produtoRepository.findAvailableByIds).not.toHaveBeenCalled();
   });
 
+  test('deve impedir novo pedido enquanto houver outro pedido em andamento', async () => {
+    produtoRepository.findAvailableByIds.mockResolvedValue([{ id: 1, precoBase: 20 }]);
+    pedidoRepository.findByUserId.mockResolvedValue([{ id: 5, status: 'RECEBIDO' }]);
+
+    await expect(PedidoService.criarPedido(10, {
+      items: [{ produtoId: 1, quantidade: 1 }],
+      formaRecebimento: 'RETIRADA',
+      formaPagamento: 'DINHEIRO'
+    })).rejects.toMatchObject({
+      status: 400,
+      message: 'Você já possui um pedido em andamento. Finalize ou espere a entrega para realizar um novo pedido.'
+    });
+
+    expect(pedidoRepository.createOrder).not.toHaveBeenCalled();
+  });
+
   test('deve rejeitar itens vazios', async () => {
     await expect(PedidoService.criarPedido(10, {
       items: [],

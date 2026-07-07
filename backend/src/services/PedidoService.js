@@ -8,6 +8,8 @@ const { FormasRecebimento, FormasPagamento, StatusPedido } = require('../utils/e
 
 class PedidoService {
   async criarPedido(usuarioId, payload) {
+    await this.validarPedidoEmAndamento(usuarioId);
+
     const { items, formaRecebimento, formaPagamento, enderecoId, taxaEntrega = 0, trocoPara = 0 } = payload;
 
     this.validarFormaRecebimento(formaRecebimento);
@@ -227,6 +229,8 @@ class PedidoService {
   /* CART (Pedido with status 'CARRINHO') */
 
   async getOrCreateCart(usuarioId) {
+    await this.validarPedidoEmAndamento(usuarioId);
+
     let cart = await pedidoRepository.findCartByUserId(usuarioId);
     if (cart) return cart;
 
@@ -350,6 +354,8 @@ class PedidoService {
   }
 
   async finalizeCart(usuarioId) {
+    await this.validarPedidoEmAndamento(usuarioId);
+
     const cart = await pedidoRepository.findCartByUserId(usuarioId);
     if (!cart) {
       throw ApiError.notFound('Carrinho não encontrado.');
@@ -367,6 +373,15 @@ class PedidoService {
     }
 
     return pedidoRepository.findByIdWithDetails(cart.id);
+  }
+
+  async validarPedidoEmAndamento(usuarioId) {
+    const pedidosDoCliente = await pedidoRepository.findByUserId(usuarioId);
+    const possuiPedidoAtivo = (pedidosDoCliente || []).some((pedido) => !['ENTREGUE', 'CANCELADO'].includes(pedido.status));
+
+    if (possuiPedidoAtivo) {
+      throw ApiError.badRequest('Você já possui um pedido em andamento. Finalize ou espere a entrega para realizar um novo pedido.');
+    }
   }
 
   validarFormaRecebimento(formaRecebimento) {
