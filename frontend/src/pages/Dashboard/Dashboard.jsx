@@ -1,92 +1,88 @@
+import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import './Dashboard.css'
 import Card from '../../components/Card'
 import adjustmentBlack from '../../images/adjustment-black.png'
 
+import orderService from '../../services/orderService';
+import productService from '../../services/productService';
 
-const pedidos = [
-  {
-    id: '00231',
-    status: 'Preparo',
-    iconeStatus: '🕒',
-    itens: [
-      { qtd: 1, nome: 'Pizza Calabresa', obs: '+Borda Cheddar', categoria: 'Pizza' },
-      { qtd: 1, nome: 'Pizza Quatro Queijos', obs: '+Borda Catupiry', categoria: 'Pizza' },
-      { qtd: 1, nome: 'X-Salada', obs: '+Complemento Milho', categoria: 'Lanche' },
-      { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-      { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-      { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-      { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-      { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-    ],
-    hora: '10:23'
-  },
-  {
-    id: '00230',
-    status: 'Preparo',
-    iconeStatus: '🕒',
-    itens: [
-      { qtd: 1, nome: 'X-Salada', obs: '+Complemento Milho', categoria: 'Lanche' },
-      { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-    ],
-    hora: '10:23'
-  },
-  {
-    id: '00229',
-    status: 'Enviado',
-    iconeStatus: '🛵',
-    itens: [
-      { qtd: 1, nome: 'Pizza Calabresa', obs: '+Borda Cheddar', categoria: 'Pizza' },
-      { qtd: 1, nome: 'Pizza Quatro Queijos', obs: '+Borda Catupiry', categoria: 'Pizza' },
-    ],
-    hora: '10:23'
-  },
-  {
-    id: '00228',
-    status: 'Cancelado',
-    iconeStatus: '❌',
-    itens: [
-      { qtd: 1, nome: 'X-Salada', obs: '+Complemento Milho', categoria: 'Lanche' },
-      { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-    ],
-    hora: '10:23'
-  },
-  {
-    id: '00227',
-    status: 'Concluido',
-    iconeStatus: '✅',
-    itens: [
-      { qtd: 1, nome: 'Pizza Calabresa', obs: '+Borda Cheddar', categoria: 'Pizza' },
-      { qtd: 1, nome: 'Pizza Quatro Queijos', obs: '+Borda Catupiry', categoria: 'Pizza' },
-      { qtd: 1, nome: 'X-Salada', obs: '+Complemento Milho', categoria: 'Lanche' },
-      { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-    ],
-    hora: '10:23'
-  }
-];
-
-const produtos = [
-  { id: 1, nome: 'X-SALADA', descricao: 'Pão brioche, hambúrguer artesanal, queijo, alface, tomate e maionese especial da casa.', preco: '00,00' },
-  { id: 2, nome: 'X-BURGER', descricao: 'Pão brioche, hambúrguer artesanal e muito queijo derretido.', preco: '00,00' },
-  { id: 3, nome: 'X-BACON', descricao: 'Pão brioche, hambúrguer, queijo, e fatias crocantes de bacon artesanal.', preco: '00,00' },
-  { id: 4, nome: 'X-TUDO', descricao: 'Pão brioche, hambúrguer, queijo, bacon, ovo, presunto, alface e tomate.', preco: '00,00' },
-];
-
-const getStatusClass = (status) => {
-  switch (status) {
-    case 'Preparo': return 'status-preparo';
-    case 'Enviado': return 'status-enviado';
-    case 'Cancelado': return 'status-cancelado';
-    case 'Concluido': return 'status-concluido';
-    default: return 'status-default';
-  }
-};
 
 const Dashboard = () => {
 
-  const quantidadePedidos = pedidos.filter(
-    pedido => pedido.status === "Preparo" || pedido.status === "Enviado"
+  const [pedidos, setPedidos] = useState([]);
+  const [produtos, setProdutos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+
+useEffect(() => {
+    carregarDashboard();
+}, []);
+
+const carregarDashboard = async () => {
+    try {
+        setLoading(true);
+
+        const pedidosApi = await orderService.listarPedidosAdmin();
+        const produtosApi = await productService.listarCardapio();
+
+        setPedidos(pedidosApi || []);
+
+        setProdutos(
+            (produtosApi || []).map(produto => ({
+                ...produto,
+                preco: Number(produto.precoBase ?? produto.preco ?? 0)
+            }))
+        );
+
+        setError("");
+
+    } catch (err) {
+        console.error(err);
+        setError("Erro ao carregar dashboard.");
+    } finally {
+        setLoading(false);
+    }
+};
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'EM_PREPARO': return 'status-preparo';
+      case 'RECEBIDO': return 'status-recebido';
+      case 'SAIU_PARA_ENTREGA': return 'status-saiu-entrega';
+      case 'ENTREGUE': return 'status-entregue';
+      case 'CANCELADO': return 'status-cancelado';
+      default: return 'status-default';
+    }
+  };
+
+    const formatarData = (dataStr) => {
+    const data = new Date(dataStr);
+    return data.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  if (user?.perfil !== 'ADMINISTRADOR') {
+    return (
+      <div className="dashboard-container">
+        <h1>Acesso Negado</h1>
+        <p>Esta seção está disponível apenas para administradores.</p>
+      </div>
+    );
+  }
+
+  const quantidadePedidos = pedidos.filter(pedido =>
+    ["RECEBIDO", "EM_PREPARO", "SAIU_PARA_ENTREGA"].includes(pedido.status)
   ).length;
 
   return (
@@ -99,27 +95,30 @@ const Dashboard = () => {
             {pedidos.map((pedido, index) => (
               <div className="cartao-pedido" key={index}>
                 <div className={`etiqueta-status ${getStatusClass(pedido.status)}`}>
-                  {pedido.iconeStatus} {pedido.status}
+                  {pedido.status}
                 </div>
                 <div className="cartao-pedido-header">
                   <div className="categoria-icons">
-                    {pedido.itens.map((item) => item.categoria).includes('Pizza') && <span>🍕</span>}
-                    {pedido.itens.map((item) => item.categoria).includes('Lanche') && <span>🍔</span>}
-                    {pedido.itens.map((item) => item.categoria).includes('Bebida') && <span>🥤</span>}
+                    {pedido.itens.map((item) => item.produto.tipo).includes('PIZZA') && <span>🍕</span>}
+                    {pedido.itens.map((item) => item.produto.tipo).includes('LANCHE') && <span>🍔</span>}
+                    {pedido.itens.map((item) => item.produto.tipo).includes('BEBIDA') && <span>🥤</span>}
+                    {pedido.itens.map((item) => item.produto.tipo).includes('PORCAO') && <span>🍟</span>}
                   </div>
                   <span className="id-pedido">{pedido.id}</span>
                 </div>
                 <div className="lista-itens-pedido">
                   {pedido.itens.map((item, idx) => (
                     <div className="item-pedido" key={idx}>
-                      <p className="nome-item"><strong>{item.qtd}x</strong> {item.nome}</p>
-                      {item.obs && <p className="obs-item">{item.obs}</p>}
+                      <p className="nome-item"><strong>{item.quantidade}x</strong> {item.produto.nome}</p>
+                      {item.observacao && <p className="obs-item">{item.observacao}</p>}
                     </div>
                   ))}
                 </div>
                 <div className="cartao-pedido-footer">
-                  <button className="btn-opcoes">•••</button>
-                  <span className="hora-pedido">{pedido.hora}</span>
+                  <button className="btn-opcoes" onClick={() => navigate('/pedidos')}>
+                    •••
+                  </button>
+                  <span className="hora-pedido">{formatarData(pedido.createdAt)}</span>
                 </div>
               </div>
             ))}
@@ -129,7 +128,7 @@ const Dashboard = () => {
       <section className='dashboard-section'>
         <h2>Produtos</h2>
         <div className='content-container'>
-          <Card produtos={produtos} icon={adjustmentBlack} cardColor={"card-yellow"} />
+          <Card produtos={produtos} icon={null} cardColor={"card-yellow"} />
         </div>
       </section>
     </div>

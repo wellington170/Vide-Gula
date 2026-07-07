@@ -66,9 +66,6 @@ class PedidoService {
       throw ApiError.notFound('Pedido não encontrado.');
     }
 
-    if (pedido.status !== 'RECEBIDO') {
-      throw ApiError.badRequest('Este pedido não pode mais ser alterado.');
-    }
 
     const { items, formaRecebimento, formaPagamento, enderecoId, taxaEntrega = pedido.taxaEntrega, trocoPara = pedido.trocoPara } = payload;
     let formaRecebimentoAtual = pedido.formaRecebimento;
@@ -377,7 +374,7 @@ class PedidoService {
 
   async validarPedidoEmAndamento(usuarioId) {
     const pedidosDoCliente = await pedidoRepository.findByUserId(usuarioId);
-    const possuiPedidoAtivo = (pedidosDoCliente || []).some((pedido) => !['ENTREGUE', 'CANCELADO'].includes(pedido.status));
+    const possuiPedidoAtivo = (pedidosDoCliente || []).some((pedido) => !['CARRINHO', 'ENTREGUE', 'CANCELADO'].includes(pedido.status));
 
     if (possuiPedidoAtivo) {
       throw ApiError.badRequest('Você já possui um pedido em andamento. Finalize ou espere a entrega para realizar um novo pedido.');

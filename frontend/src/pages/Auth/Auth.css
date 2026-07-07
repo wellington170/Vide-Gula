@@ -55,6 +55,10 @@
   margin-top: -5px;
 }
 
+.input-group input {
+  width: 100%;
+}
+
 .link-criar-conta {
   font-size: 14px;
   color: var(--text-dark);

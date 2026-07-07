@@ -6,7 +6,6 @@ SET @now = NOW();
 -- Users (admin and cliente)
 INSERT INTO usuarios (nome, telefone, email, senha, perfil, created_at, updated_at)
 VALUES
-  ('Administrador', '+5511999999999', 'admin@videgula.local', '$2a$10$wq4I8N0Pd/vuUVresVW3NOhnJnAsRnAw0lO1fw.IJfIujjQ9MrVzS', 'ADMINISTRADOR', @now, @now),
   ('Cliente Teste', '+5511988888888', 'cliente@teste.local', '$2a$10$uvBiAdmCQ1Xf7TTXL5d/eONGFnmahks3VvUWO7S7sOGpYi.DhScCe', 'CLIENTE', @now, @now);
 
 -- Capture inserted user ids

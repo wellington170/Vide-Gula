@@ -113,6 +113,22 @@
 .status-cancelado { background-color: #cc0000; }
 .status-concluido { background-color: #339900; }
 
+.btn-excluir-acompanhar {
+  display: flex;
+  margin-left: 15px;
+}
+
+.btn-excluir-acompanhar button {
+  border: none;
+  background-color: red;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (max-width: 900px) {
   .acompanhar-container {
     padding: 10px 5% 50px 5%;

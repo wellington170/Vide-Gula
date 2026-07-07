@@ -60,10 +60,11 @@
   font-size: 14px;
   color: var(--white);
 }
-.status-preparo { background-color: #8c5a45; }
-.status-enviado { background-color: #e65c00; }
-.status-cancelado { background-color: #cc0000; }
-.status-concluido { background-color: #339900; }
+.status-preparo { background-color: #2196f3; }
+.status-recebido { background-color: #ff9800; }
+.status-saiu-entrega { background-color: #4caf50; }
+.status-entregue { background-color: #8bc34a; }
+.status-cancelado { background-color: #f44336; }
 
 .cartao-pedido-header {
   display: flex;

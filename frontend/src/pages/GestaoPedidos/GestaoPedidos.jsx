@@ -1,153 +1,255 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import './GestaoPedidos.css';
+import orderService from '../../services/orderService';
 
-import './GestaoPedidos.css'
+const GestaoPedidos = () => {
+  const user = useSelector((state) => state.auth.user);
+  const [pedidos, setPedidos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [pedidoExpandido, setPedidoExpandido] = useState(null);
+  const [statusExpandido, setStatusExpandido] = useState(null);
+  const [cancelando, setCancelando] = useState(false);
 
-const initialPedidos = [
-    {
-        id: '00231',
-        status: 'Preparo',
-        iconeStatus: '🕒',
-        itens: [
-            { qtd: 1, nome: 'Pizza Calabresa', obs: '+Borda Cheddar', categoria: 'Pizza' },
-            { qtd: 1, nome: 'Pizza Quatro Queijos', obs: '+Borda Catupiry', categoria: 'Pizza' },
-            { qtd: 1, nome: 'X-Salada', obs: '+Complemento Milho', categoria: 'Lanche' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-        ],
-        hora: '10:23'
-    },
-    {
-        id: '00230',
-        status: 'Preparo',
-        iconeStatus: '🕒',
-        itens: [
-            { qtd: 1, nome: 'X-Salada', obs: '+Complemento Milho', categoria: 'Lanche' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-        ],
-        hora: '10:23'
-    },
-    {
-        id: '00229',
-        status: 'Enviado',
-        iconeStatus: '🛵',
-        itens: [
-            { qtd: 1, nome: 'Pizza Calabresa', obs: '+Borda Cheddar', categoria: 'Pizza' },
-            { qtd: 1, nome: 'Pizza Quatro Queijos', obs: '+Borda Catupiry', categoria: 'Pizza' },
-        ],
-        hora: '10:23'
-    },
-    {
-        id: '00228',
-        status: 'Cancelado',
-        iconeStatus: '❌',
-        itens: [
-            { qtd: 1, nome: 'X-Salada', obs: '+Complemento Milho', categoria: 'Lanche' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-        ],
-        hora: '10:23'
-    },
-    {
-        id: '00227',
-        status: 'Concluido',
-        iconeStatus: '✅',
-        itens: [
-            { qtd: 1, nome: 'Pizza Calabresa', obs: '+Borda Cheddar', categoria: 'Pizza' },
-            { qtd: 1, nome: 'Pizza Quatro Queijos', obs: '+Borda Catupiry', categoria: 'Pizza' },
-            { qtd: 1, nome: 'X-Salada', obs: '+Complemento Milho', categoria: 'Lanche' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-        ],
-        hora: '10:23'
+  useEffect(() => {
+    carregarPedidos();
+  }, []);
+
+  const carregarPedidos = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const dados = await orderService.listarPedidosAdmin();
+      setPedidos(dados);
+    } catch (err) {
+      console.error('Erro ao carregar pedidos:', err);
+      setError('Erro ao carregar seus pedidos. Tente novamente.');
+    } finally {
+      setLoading(false);
     }
-];
+  };
 
-const getStatusConfig = (status) => {
-    switch (status) {
-        case 'Preparo': return { classe: 'status-preparo', icone: '🕒' };
-        case 'Enviado': return { classe: 'status-enviado', icone: '🛵' };
-        case 'Cancelado': return { classe: 'status-cancelado', icone: '❌' };
-        case 'Concluido': return { classe: 'status-concluido', icone: '✅' };
-        default: return { classe: '', icone: '' };
+const alterarPedido = async (pedidoId, status) => {
+
+    try {
+
+        await orderService.atualizarStatusPedido(pedidoId, status);
+
+        setPedidos(prev =>
+            prev.map(p =>
+                p.id === pedidoId
+                    ? { ...p, status }
+                    : p
+            )
+        );
+
+        setStatusExpandido(null);
+
+    } catch (err) {
+        console.error(err);
+    }
+
+};
+
+  const getStatusColor = (status) => {
+    const cores = {
+      'RECEBIDO': '#ff9800',
+      'EM_PREPARO': '#2196f3',
+      'SAIU_PARA_ENTREGA': '#4caf50',
+      'ENTREGUE': '#8bc34a',
+      'CANCELADO': '#f44336'
+    };
+    return cores[status] || '#999';
+  };
+
+  const formatarData = (dataStr) => {
+    const data = new Date(dataStr);
+    return data.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const selecionarStatus = (tipo) => {
+    setPedidos((prev) => (prev.id === { ...prev, tipo }));
+    setMenuCategoriaAberto(false);
+  };
+
+const excluirPedido = async (pedidoId) => {
+    const confirmar = window.confirm(
+        "Tem certeza que deseja excluir este pedido?"
+    );
+
+    if (!confirmar) return;
+
+    try {
+        console.log(pedidoId);
+        await orderService.excluirPedidoAdmin(pedidoId);
+
+        setPedidos((prev) =>
+            prev.filter((pedido) => pedido.id !== pedidoId)
+        );
+
+        if (pedidoExpandido === pedidoId) {
+            setPedidoExpandido(null);
+        }
+
+        if (statusExpandido === pedidoId) {
+            setStatusExpandido(null);
+        }
+    } catch (err) {
+        console.error(err);
+        setError("Erro ao excluir pedido.");
     }
 };
 
-const GestaoPedidos = () => {
-    const [pedidos, setPedidos] = useState(initialPedidos);
-    const [openStatusMenuId, setOpenStatusMenuId] = useState(null);
+  if (loading) {
+    return <div className="gestao-pedidos-container"><p>Carregando seus pedidos...</p></div>;
+  }
 
-    const toggleStatusMenu = (id) => {
-        setOpenStatusMenuId(prev => prev === id ? null : id);
-    };
+  return (
+    <div className="gestao-pedidos-container">
+      <h1>Pedidos</h1>
 
-    const selecionarStatus = (id, status) => {
-        setPedidos(prev => prev.map(p => p.id === id ? { ...p, status } : p));
-        setOpenStatusMenuId(null);
-    };
+      {error && <div style={{ color: 'red', padding: '15px', marginBottom: '15px', backgroundColor: '#ffe0e0' }}>{error}</div>}
 
-    return (
-        <div className="gestao-pedidos-container">
-            <h1>Gestão de Pedidos</h1>
-            <div className="tabela-pedidos-wrapper">
-                <div className="tabela-pedidos-header">
-                    <div className="coluna-id">Id</div>
-                    <div className="coluna-pedido">Pedido</div>
-                    <div className="coluna-endereco">Endereço</div>
-                    <div className="coluna-total">Total</div>
-                    <div className="coluna-status">Status</div>
-                </div>
-
-                <div>
-                    {pedidos.map((pedido) => {
-                        const config = getStatusConfig(pedido.status);
-                        return (
-                            <div className="linha-pedido-gestao" key={pedido.id}>
-
-                                <div className="coluna-id conteudo-celula">
-                                    {pedido.id}
-                                </div>
-                                <div className="coluna-pedido conteudo-celula">
-                                    {pedido.itens.map((item) => (item.qtd + 'x ' + item.nome + (item.obs ? ` (${item.obs})` : '') + ', ')).join(' ').slice(0, -2)}
-                                </div>
-
-                                <div className="coluna-endereco conteudo-celula">
-                                    {pedido.endereco}
-                                </div>
-
-                                <div className="coluna-total conteudo-celula valor-total-destaque">
-                                    R$ {pedido.total}
-                                </div>
-
-                                <div className="coluna-status conteudo-celula">
-                                    <div className="dropdown-status-container">
-                                        <button
-                                            type="button"
-                                            className={`badge-status-linha ${getStatusConfig(pedido.status).classe}`}
-                                            onClick={() => toggleStatusMenu(pedido.id)}
-                                        >
-                                            {getStatusConfig(pedido.status).icone} {pedido.status}
-                                        </button>
-
-                                        {openStatusMenuId === pedido.id && (
-                                            <div className="pedidos-categorias">
-                                                <button type="button" className="status-preparo" onClick={() => selecionarStatus(pedido.id, 'Preparo')}>🕒 Preparo</button>
-                                                <button type="button" className="status-enviado" onClick={() => selecionarStatus(pedido.id, 'Enviado')}>🛵 Enviado</button>
-                                                <button type="button" className="status-cancelado" onClick={() => selecionarStatus(pedido.id, 'Cancelado')}>❌ Cancelado</button>
-                                                <button type="button" className="status-concluido" onClick={() => selecionarStatus(pedido.id, 'Concluido')}>✅ Concluido</button>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-
-                            </div>
-                        );
-                    })}
-                </div>
-
-            </div>
+      {pedidos.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '40px', fontSize: '18px' }}>
+          <p>Você ainda não fez nenhum pedido</p>
         </div>
-    )
-}
+      ) : (
+        <div className="pedidos-lista">
+          {pedidos.map((pedido) => (
+            <div key={pedido.id} className="pedido-card">
+              <div className="pedido-header" onClick={() => setPedidoExpandido(pedidoExpandido === pedido.id ? null : pedido.id)}>
+                <div style={{ display: 'flex', flex: 1, justifyContent: 'space-between' }}>
+                  <div>
+                        <h3>Pedido #{pedido.id}</h3>
+                        <p style={{ color: '#666', marginTop: '5px' }}>
+                            {formatarData(pedido.createdAt)}
+                        </p>
+                  </div>
 
-export default GestaoPedidos
+                  <div className="excluir-gestao" onClick={(e) => {
+                        e.stopPropagation();
+                        excluirPedido(pedido.id);
+                  }}>
+                      <button>🗑️</button>
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <p style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>
+                    R$ {Number(pedido.valorTotal).toFixed(2)}
+                  </p>
+                </div>
+        <div
+            className="dropdown-status-container"
+            onClick={(e) => e.stopPropagation()}
+        >
+            <button
+                className="btn-status"
+                type="button"
+                onClick={() =>
+                    setStatusExpandido(
+                        statusExpandido === pedido.id ? null : pedido.id
+                    )
+                }
+                style={{
+                    backgroundColor: getStatusColor(pedido.status)
+                }}
+            >
+                {pedido.status} ▼
+            </button>
+
+            {statusExpandido === pedido.id && (
+                <div className="pedidos-categorias">
+                    <button onClick={() => alterarPedido(pedido.id, "RECEBIDO")}
+                        style={{
+                            backgroundColor: getStatusColor("RECEBIDO")
+                        }}    
+                    >RECEBIDO
+                    </button>
+
+                    <button onClick={() => alterarPedido(pedido.id, "EM_PREPARO")}
+                        style={{
+                            backgroundColor: getStatusColor("EM_PREPARO")
+                        }}    
+                    >EM PREPARO
+                    </button>
+
+                    <button onClick={() => alterarPedido(pedido.id, "SAIU_PARA_ENTREGA")}
+                        style={{
+                            backgroundColor: getStatusColor("SAIU_PARA_ENTREGA")
+                        }}    
+                    >SAIU PARA ENTREGA
+                    </button>
+
+                    <button onClick={() => alterarPedido(pedido.id, "ENTREGUE")}
+                        style={{
+                            backgroundColor: getStatusColor("ENTREGUE")
+                        }}    
+                    >ENTREGUE
+                    </button>
+
+                    <button onClick={() => alterarPedido(pedido.id, "CANCELADO")}
+                        style={{
+                            backgroundColor: getStatusColor("CANCELADO")
+                        }}    
+                    >CANCELADO
+                    </button>
+                </div>
+            )}
+        </div>
+        </div>
+
+              {pedidoExpandido === pedido.id && (
+                <div className="pedido-detalhes">
+                  <h4>Itens do Pedido:</h4>
+                  <div>
+                    {pedido.itens && pedido.itens.length > 0 ? (
+                      <ul style={{ listStyle: 'none', padding: 0 }}>
+                        {pedido.itens.map((item, idx) => (
+                          <li key={idx} style={{ padding: '8px', borderBottom: '1px solid #eee', display: 'flex', justifyContent: 'space-between' }}>
+                            <span>{item.produto?.nome} x {item.quantidade}</span>
+                            <span style={{ fontWeight: 'bold' }}>R$ {(item.subtotal)}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>Sem itens</p>
+                    )}
+                  </div>
+
+                  <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid #ddd' }}>
+                    <p><strong>Forma de Recebimento:</strong> {pedido.formaRecebimento}</p>
+                    <p><strong>Forma de Pagamento:</strong> {pedido.formaPagamento}</p>
+                    {pedido.formaRecebimento === 'DELIVERY' && (
+                      <>
+                        <p><strong>Taxa de Entrega:</strong> R$ {Number(pedido.taxaEntrega || 0).toFixed(2)}</p>
+                        {pedido.endereco && (
+                          <div style={{ marginTop: '10px', padding: '10px', backgroundColor: '#f5f5f5', borderRadius: '5px' }}>
+                            <p><strong>Endereço de Entrega:</strong></p>
+                            <p>{pedido.endereco.rua}, {pedido.endereco.numero} - {pedido.endereco.bairro}</p>
+                            <p>{pedido.endereco.cidade}, {pedido.endereco.estado} {pedido.endereco.cep}</p>
+                            {pedido.endereco.complemento && <p>Complemento: {pedido.endereco.complemento}</p>}
+                            {pedido.endereco.pontoReferencia && <p>Referência: {pedido.endereco.pontoReferencia}</p>}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default GestaoPedidos;

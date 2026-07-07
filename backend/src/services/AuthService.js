@@ -71,7 +71,11 @@ class AuthService {
     const usuarioJson = usuario.toJSON();
     delete usuarioJson.senha;
 
-    return usuarioJson;
+    const token = jwt.sign({ id: usuario.id, perfil: usuario.perfil }, process.env.JWT_SECRET, {
+      expiresIn: '1d'
+    });
+
+    return { usuario: usuarioJson, token };
   }
 }
 

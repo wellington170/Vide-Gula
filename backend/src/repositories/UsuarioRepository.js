@@ -7,7 +7,10 @@ class UsuarioRepository extends BaseRepository {
   }
 
   findByEmail(email) {
-    return this.findOne({ where: { email } });
+    return this.findOne({
+      where: { email },
+      include: [{ model: require('../models').Endereco, as: 'endereco' }]
+    });
   }
 }
 

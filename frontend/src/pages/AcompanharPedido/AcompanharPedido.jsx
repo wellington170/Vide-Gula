@@ -1,148 +1,117 @@
-import React from 'react'
+import { useState, useEffect } from 'react';
+import orderService from '../../services/orderService';
+import './AcompanharPedido.css';
 
-import './AcompanharPedido.css'
+const statusConfig = {
+  RECEBIDO: { texto: 'Recebido', icone: '📥', classe: 'status-recebido' },
+  EM_PREPARO: { texto: 'Em preparo', icone: '🕒', classe: 'status-preparo' },
+  SAIU_PARA_ENTREGA: { texto: 'Saiu para entrega', icone: '🛵', classe: 'status-enviado' },
+  ENTREGUE: { texto: 'Entregue', icone: '✅', classe: 'status-concluido' },
+  CANCELADO: { texto: 'Cancelado', icone: '❌', classe: 'status-cancelado' }
+};
 
-const initialPedidos = [
-    {
-        id: '00231',
-        status: 'Preparo',
-        iconeStatus: '🕒',
-        itens: [
-            { qtd: 1, nome: 'Pizza Calabresa', obs: '+Borda Cheddar', categoria: 'Pizza' },
-            { qtd: 1, nome: 'Pizza Quatro Queijos', obs: '+Borda Catupiry', categoria: 'Pizza' },
-            { qtd: 1, nome: 'X-Salada', obs: '+Complemento Milho', categoria: 'Lanche' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-        ],
-        hora: '10:23'
-    },
-    {
-        id: '00230',
-        status: 'Preparo',
-        iconeStatus: '🕒',
-        itens: [
-            { qtd: 1, nome: 'X-Salada', obs: '+Complemento Milho', categoria: 'Lanche' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-        ],
-        hora: '10:23'
-    },
-    {
-        id: '00229',
-        status: 'Enviado',
-        iconeStatus: '🛵',
-        itens: [
-            { qtd: 1, nome: 'Pizza Calabresa', obs: '+Borda Cheddar', categoria: 'Pizza' },
-            { qtd: 1, nome: 'Pizza Quatro Queijos', obs: '+Borda Catupiry', categoria: 'Pizza' },
-        ],
-        hora: '10:23'
-    },
-    {
-        id: '00228',
-        status: 'Cancelado',
-        iconeStatus: '❌',
-        itens: [
-            { qtd: 1, nome: 'X-Salada', obs: '+Complemento Milho', categoria: 'Lanche' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-        ],
-        hora: '10:23'
-    },
-    {
-        id: '00227',
-        status: 'Concluido',
-        iconeStatus: '✅',
-        itens: [
-            { qtd: 1, nome: 'Pizza Calabresa', obs: '+Borda Cheddar', categoria: 'Pizza' },
-            { qtd: 1, nome: 'Pizza Quatro Queijos', obs: '+Borda Catupiry', categoria: 'Pizza' },
-            { qtd: 1, nome: 'X-Salada', obs: '+Complemento Milho', categoria: 'Lanche' },
-            { qtd: 1, nome: 'Guaraná', obs: '', categoria: 'Bebida' },
-        ],
-        hora: '10:23'
-    }
-];
+const formatarData = (dataStr) => {
+  const data = new Date(dataStr);
+  return data.toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
 
 const AcompanharPedido = () => {
+  const [pedidos, setPedidos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-    const getStatusConfig = (status) => {
-        switch (status) {
-            case 'Preparo': return { classe: 'status-preparo', icone: '🕒' };
-            case 'Enviado': return { classe: 'status-enviado', icone: '🛵' };
-            case 'Cancelado': return { classe: 'status-cancelado', icone: '❌' };
-            case 'Concluido': return { classe: 'status-concluido', icone: '✅' };
-            default: return { classe: '', icone: '' };
-        }
-    };
+  useEffect(() => {
+    buscarPedidos();
+  }, []);
+
+  const buscarPedidos = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const dados = await orderService.listarPedidosCliente();
+      setPedidos(dados);
+    } catch (err) {
+      console.error('Erro ao buscar pedidos:', err);
+      setError(typeof err === 'string' ? err : err?.message || 'Erro ao carregar pedidos.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+const cancelarPedido = async (pedidoId) => {
+    const confirmar = window.confirm(
+        "Tem certeza que deseja cancelar este pedido?"
+    );
+
+    if (!confirmar) return;
+
+    try {
+        console.log(pedidoId);
+        await orderService.cancelarPedidoCliente(pedidoId);
+
+        buscarPedidos();
+    } catch (err) {
+        console.error(err);
+        setError("Erro ao excluir pedido.");
+    }
+};
 
   return (
     <div className='acompanhar-container'>
-        <h1>Pedido em andamento</h1>
-        <div className='info-pedido'>
-            <div className='info-container'>
-                <span>Detalhes</span>
-                <div className='info-content'>
-                    <div className='info-detalhes'>
-                        <span>Itens</span>
-                        <p>SUAOSHDOADJAI</p>
-                    </div>
-                    <div className='info-detalhes'>
-                        <span>Entrega</span>
-                        <p>SUAOSHDOADJAI</p>
-                    </div>
-                    <div className='info-detalhes'>
-                        <span>Observações</span>
-                        <p>SUAOSHDOADJAI</p>
-                    </div>
-                    <div className='info-detalhes'>
-                        <strong>Pagamento</strong>
-                        <strong>SUAOSHDOADJAI</strong>
-                    </div>
-                </div>
-            </div>
-            <div className='info-container'>
-                <span>Status</span>
-                <div className='info-content'>
-                    <strong>Pedido recebido, logo seu pedido será entregue</strong>
-                    <span>Previsão de entrega: 30-45 minutos</span>
-                </div>
-            </div>
-        </div>
+      <h1>Acompanhar Pedido</h1>
 
-        <h1>Histórico</h1>
+      {error && <div className='erro-mensagem'>{error}</div>}
+
+      {loading ? (
+        <p style={{ padding: '20px', textAlign: 'center' }}>Carregando pedidos...</p>
+      ) : pedidos.length === 0 ? (
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <p>Você ainda não tem pedidos para acompanhar.</p>
+        </div>
+      ) : (
         <div className='tabela-acompanhar-wrapper'>
-            <div className='tabela-acompanhar-header'>
-                <div className='coluna-data'>Data</div>
-                <div className='coluna-itens'>Itens</div>
-                <div className='coluna-subtotal'>Subtotal</div>
-                <div className='coluna-entrega'>Entrega</div>
-                <div className='coluna-total'>Total</div>
-                <div className='coluna-status-acompanhar'>Status</div>
-            </div>
-            <div>
-                {initialPedidos.map((pedido, index) => (
-                    <div key={index} className='linha-acompanhar'>
-                        <div className='coluna-data conteudo-celula-acompanhar'>{pedido.id}</div>
-                        <div className='coluna-itens conteudo-celula-acompanhar'>
-                            {pedido.itens.map((item) => (item.qtd + 'x ' + item.nome + ', ')).join(' ').slice(0, -2)}
-                        </div>
-                        <div className='coluna-subtotal conteudo-celula-acompanhar'>R$ 20,00</div>
-                        <div className='coluna-entrega conteudo-celula-acompanhar'>R$ 10,00</div>
-                        <div className='coluna-total conteudo-celula-acompanhar'>R$ 30,00</div>
-                        <div className={'coluna-status-acompanhar conteudo-celula-acompanhar' }>
-                            <div className={getStatusConfig(pedido.status).classe + ' badge-status'}>
-                                {getStatusConfig(pedido.status).icone} {pedido.status}
-                            </div>
-                        </div>
+          <div className='tabela-acompanhar-header'>
+            <div className='coluna-data'>Data</div>
+            <div className='coluna-itens'>Itens</div>
+            <div className='coluna-subtotal'>Subtotal</div>
+            <div className='coluna-entrega'>Entrega</div>
+            <div className='coluna-total'>Total</div>
+            <div className='coluna-status-acompanhar'>Status</div>
+          </div>
+          <div>
+            {pedidos.map((pedido) => {
+                console.log(pedido.id, pedido.status);
+              const status = statusConfig[pedido.status] || { texto: pedido.status, icone: 'ℹ️', classe: 'status-default' };
+              const itensText = pedido.itens?.map((item) => `${item.quantidade}x ${item.produto?.nome || 'Produto'}`).join(', ');
+              return (
+                <div key={pedido.id} className='linha-acompanhar'>
+                  <div className='coluna-data conteudo-celula-acompanhar'>{formatarData(pedido.createdAt)}</div>
+                  <div className='coluna-itens conteudo-celula-acompanhar'>{itensText}</div>
+                  <div className='coluna-subtotal conteudo-celula-acompanhar'>R$ {Number(pedido.valorTotal - (pedido.taxaEntrega || 0)).toFixed(2)}</div>
+                  <div className='coluna-entrega conteudo-celula-acompanhar'>R$ {Number(pedido.taxaEntrega || 0).toFixed(2)}</div>
+                  <div className='coluna-total conteudo-celula-acompanhar'>R$ {Number(pedido.valorTotal).toFixed(2)}</div>
+                  <div className='coluna-status-acompanhar conteudo-celula-acompanhar'>
+                    <div className={`${status.classe} badge-status`}>
+                      {status.icone} {status.texto}
                     </div>
-                ))}
-            </div>
-
+                    <div className="btn-excluir-acompanhar">
+                        <button onClick={() => cancelarPedido(pedido.id)}>✖️</button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-
-
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default AcompanharPedido

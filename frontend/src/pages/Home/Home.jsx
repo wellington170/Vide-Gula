@@ -1,30 +1,47 @@
-import React from 'react';
-
+import React, { useState, useEffect } from 'react';
 import './Home.css';
 
 import onda from '../../images/onda_home.png';
 import addWhite from '../../images/add-white.png';
 import addBlack from '../../images/add-black.png';
 import Card from '../../components/Card';
+import productService from '../../services/productService';
 
 const Home = () => {
-  // Dados de exemplo para renderizar os cards dinamicamente
-  const pizzas = [
-    { id: 1, nome: 'FRANGO COM CATUPIRY', descricao: 'Combina massa macia, suculento peito de frango desfiado temperado e a cremosidade inconfundível do requeijão.', preco: '00,00' },
-    { id: 2, nome: 'CALABRESA', descricao: 'Combina massa macia, suculenta calabresa fatiada, cebola e a cremosidade inconfundível do queijo.', preco: '00,00' },
-    { id: 3, nome: 'PORTUGUESA', descricao: 'Combina massa macia, presunto, ovos, cebola, ervilha e a cremosidade inconfundível da mussarela.', preco: '00,00' },
-    { id: 4, nome: 'QUATRO QUEIJOS', descricao: 'Combina massa macia, suculento mix de queijos provolone, parmesão, gorgonzola e mussarela.', preco: '00,00' },
-  ];
+  const [produtos, setProdutos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const burguers = [
-    { id: 1, nome: 'X-SALADA', descricao: 'Pão brioche, hambúrguer artesanal, queijo, alface, tomate e maionese especial da casa.', preco: '00,00' },
-    { id: 2, nome: 'X-BURGER', descricao: 'Pão brioche, hambúrguer artesanal e muito queijo derretido.', preco: '00,00' },
-    { id: 3, nome: 'X-BACON', descricao: 'Pão brioche, hambúrguer, queijo, e fatias crocantes de bacon artesanal.', preco: '00,00' },
-    { id: 4, nome: 'X-TUDO', descricao: 'Pão brioche, hambúrguer, queijo, bacon, ovo, presunto, alface e tomate.', preco: '00,00' },
-  ];
+  useEffect(() => {
+    carregarProdutos();
+  }, []);
+
+  const carregarProdutos = async () => {
+    try {
+      setLoading(true);
+      const dados = await productService.listarCardapio();
+      setProdutos(dados);
+      setError('');
+    } catch (err) {
+      console.error('Erro ao carregar produtos:', err);
+      setError('Erro ao carregar produtos');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const pizzas = produtos.filter(p => p.tipo?.toUpperCase() === 'PIZZA') || [];
+  const lanches = produtos.filter(p => p.tipo?.toUpperCase() === 'LANCHE') || [];
+  const bebidas = produtos.filter(p => p.tipo?.toUpperCase() === 'BEBIDA') || [];
+  const porcoes = produtos.filter(p => p.tipo?.toUpperCase() === 'PORCAO') || [];
+
+  if (loading) {
+    return <div style={{ padding: '40px', textAlign: 'center', fontSize: '18px' }}>Carregando produtos...</div>;
+  }
 
   return (
     <div className="home-container">
+      {error && <div style={{ color: 'red', padding: '20px', textAlign: 'center' }}>{error}</div>}
       
         <section className="home-section">
           <h1>
@@ -53,15 +70,29 @@ const Home = () => {
         </section>
 
         {/* Menu de pizzas */}
+        {pizzas.length > 0 && (
+          <section className="menu-section">
+            <h2>Pizzas <span className="title-icon">🍕</span></h2>
+            <Card produtos={pizzas} icon={addBlack} cardColor="card-yellow" />
+          </section>
+        )}
+
+        {/* Menu de lanches */}
         <section className="menu-section">
-          <h2>Pizzas <span className="title-icon">🍕</span></h2>
-          <Card produtos={pizzas} icon={addBlack} cardColor="card-yellow" />
+          <h2>Lanches <span className="title-icon">🍔</span></h2>
+          <Card produtos={lanches} icon={addWhite} cardColor="card-red" />
         </section>
 
-        {/* Menu de burguers */}
+        {/* Menu de bebidas */}
         <section className="menu-section">
-          <h2>Burguers <span className="title-icon">🍔</span></h2>
-          <Card produtos={burguers} icon={addWhite} cardColor="card-red" />
+          <h2>Bebidas <span className="title-icon">🥤</span></h2>
+          <Card produtos={bebidas} icon={addBlack} cardColor="card-yellow" />
+        </section>
+
+        {/* Menu de porcoes */}
+        <section className="menu-section">
+          <h2>Porções <span className="title-icon">🍟</span></h2>
+          <Card produtos={porcoes} icon={addWhite} cardColor="card-red" />
         </section>
     </div>
   );
